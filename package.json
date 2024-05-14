@@ -11,7 +11,7 @@
   },
   "dependencies": {
     "bootstrap": "^5.3.3",
-    "ethers": "^6.12.1",
+    "ethers": "^5.7.2",
     "framer-motion": "^11.1.9",
     "react": "^18.2.0",
     "react-bootstrap": "^2.10.2",

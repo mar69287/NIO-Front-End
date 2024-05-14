@@ -44,7 +44,7 @@ function App() {
 
   return (
     <BrowserRouter>
-      <div className='flex flex-column justify-center items-start min-h-screen min-w-screen'>
+      <div className='flex flex-column justify-center items-start min-h-[120vh] min-w-screen'>
         <HomeNavBar client={client} hasWeb3={hasWeb3} web3Handler={web3Handler}/>
       </div>
     </BrowserRouter>

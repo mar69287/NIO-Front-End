@@ -36,4 +36,6 @@ foreach ($item in $items) {
     }
 }
 
+Write-Host "Copy Complete!"
+
 exit 0

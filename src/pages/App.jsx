@@ -3,6 +3,7 @@ import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom'
 import { ethers } from "ethers"
 import Dashboard from './Dashboard'
 import Home from './Home';
+import UserNavBar from '../components/UserNavBar';
 
 function App() {
   const [client, setClient] = useState({
@@ -45,10 +46,11 @@ function App() {
 
   return (
     <BrowserRouter>
-      <div className='flex flex-column justify-center items-start min-h-[100vh] min-w-screen'>
+      <div className='flex flex-column justify-center items-start min-h-[100vh] min-w-screen pt-24'>
         {
           client.account ? 
           <>
+            <UserNavBar client={client} />
             <Routes>
               <Route path="/dashboard"  element={<Dashboard client={client} hasWeb3={hasWeb3} web3Handler={web3Handler}/>}/>
               <Route path="*" element={<Navigate replace to="/dashboard" />} />

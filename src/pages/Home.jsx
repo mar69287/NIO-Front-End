@@ -1,8 +1,10 @@
-import React from 'react'
+import HomeNavBar from '../components/HomeNavBar'
 
-const Home = () => {
+const Home = ({client, web3Handler, hasWeb3}) => {
   return (
-    <div>Home</div>
+    <>
+      <HomeNavBar client={client} hasWeb3={hasWeb3} web3Handler={web3Handler}/>
+    </>
   )
 }
 

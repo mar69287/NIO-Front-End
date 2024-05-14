@@ -1,7 +1,8 @@
 import { useState } from 'react'
-import { BrowserRouter } from 'react-router-dom'
+import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom'
 import { ethers } from "ethers"
-import HomeNavBar from '../components/HomeNavBar';
+import Dashboard from './Dashboard'
+import Home from './Home';
 
 function App() {
   const [client, setClient] = useState({
@@ -44,8 +45,24 @@ function App() {
 
   return (
     <BrowserRouter>
-      <div className='flex flex-column justify-center items-start min-h-[120vh] min-w-screen'>
-        <HomeNavBar client={client} hasWeb3={hasWeb3} web3Handler={web3Handler}/>
+      <div className='flex flex-column justify-center items-start min-h-[100vh] min-w-screen'>
+        {
+          client.account ? 
+          <>
+            <Routes>
+              <Route path="/dashboard"  element={<Dashboard client={client} hasWeb3={hasWeb3} web3Handler={web3Handler}/>}/>
+              <Route path="*" element={<Navigate replace to="/dashboard" />} />
+            </Routes>
+          
+          </>
+          :
+          <>
+           <Routes>
+              <Route path="/" element={<Home client={client} hasWeb3={hasWeb3} web3Handler={web3Handler}/>} />
+              <Route path="*" element={<Navigate replace to="/" />} />
+            </Routes>
+          </>
+        }
       </div>
     </BrowserRouter>
   )

@@ -1,43 +1,39 @@
+# Define source and destination paths
 $sourcePath = Get-Location
-$destinationPath = "../niov-frontend"
+$destinationPath = Join-Path $sourcePath "..\niov-frontend"
 
+# Define excluded directories and files
+$excludedDirectories = @('node_modules', '.git', 'bin')
+$excludedFiles = @('package-lock.json')
+
+# Function to calculate file hash
 function Get-FileHashValue {
     param (
         [string]$filePath
     )
-    return Get-FileHash -Algorithm SHA256 -Path $filePath
+    $fileHash = Get-FileHash -Algorithm SHA256 -Path $filePath
+    return $fileHash.Hash
 }
 
-# Copy all items except the .git folder and verify
-$items = Get-ChildItem -Path $sourcePath -Recurse -Force | Where-Object {
-    $_.FullName -notlike "*.git*" -and $_.FullName -notlike "*\bin*"
-}
-
+# Get all items in the source directory
+$items = Get-ChildItem -Path $sourcePath
+Write-Host $destinationPath
 
 foreach ($item in $items) {
-    $destination = $item.FullName.Replace($sourcePath, $destinationPath)
+    $isExcludedDir = $item.PSIsContainer -and $excludedDirectories -contains $item.Name
+    $isExcludedFile = -not $item.PSIsContainer -and $excludedFiles -contains $item.Name
     
-    if ($item.PSIsContainer) {
-        if (!(Test-Path -Path $destination)) {
-            New-Item -ItemType Directory -Path $destination
-        }
-    }
-    else {
-        Copy-Item -Path $item.FullName -Destination $destination -Force
-        
-        # Verify the copied file
-        $sourceHash = Get-FileHashValue -filePath $item.FullName
-        $destinationHash = Get-FileHashValue -filePath $destination
-        
-        if ($sourceHash.Hash -ne $destinationHash.Hash) {
-            Write-Host "Hash mismatch for $($item.FullName) and $destination" -ForegroundColor Red
-        }
-        else {
-            Write-Host "File $($item.FullName) copied and verified successfully."
+    if (-not $isExcludedDir -and -not $isExcludedFile) {
+        # Calculate relative path
+        $relativePath = $item.FullName.Substring($sourcePath.Length + 1)
+        # Define the destination path for the current item
+        $destItemPath = Join-Path $destinationPath $item.Name
+        if ($item.PSIsContainer) {
+            Copy-Item -Path $item.FullName -Destination $destItemPath -Recurse
+        } else {
+            Copy-Item -Path $item.FullName -Destination $destItemPath
         }
     }
 }
-
-Write-Host "Copy and verification completed successfully!"
 
 exit 0

@@ -1,28 +1,21 @@
-$targetPath = "../niov-frontend/"
+# Define the path of the directory to clean up
+$folderPath = "../niov-frontend"
 
-# Get all items in the target path, excluding the .git folder
-$items = Get-ChildItem -Path $targetPath -Recurse -Force | Where-Object {
-    $_.FullName -notlike "*.git*"
+# Get all items in the directory except the specified directories
+$items = Get-ChildItem -Path $folderPath | Where-Object {
+    # Exclude directories named 'node_modules' or '.git'
+    -not ($_.PSIsContainer -and ($_.Name -eq ".git"))
 }
 
-# Delete each item if it still exists
+# Loop through each item and remove it
 foreach ($item in $items) {
-    try {
-        if (Test-Path -Path $item.FullName) {
-            if ($item.PSIsContainer) {
-                Remove-Item -Path $item.FullName -Recurse -Force
-            }
-            else {
-                Remove-Item -Path $item.FullName -Force
-            }
-        }
-        else {
-            Write-Host "Warning: $($item.FullName) no longer exists." -ForegroundColor Yellow
-        }
-    }
-    catch {
-        Write-Host "Error: Failed to delete $($item.FullName): $_" -ForegroundColor Red
-    }
+    # Display the item to be removed (optional, for verification)
+    Write-Output "Removing: $($item.FullName)"
+
+    # Remove the item, use -Force to remove hidden or read-only items, and -Recurse if it's a directory
+    Remove-Item $item.FullName -Force -Recurse -ErrorAction Continue
 }
 
-Write-Host "Contents of $targetPath deleted, except for the .git folder." -ForegroundColor Green
+Write-Output "Cleanup completed."
+
+exit 0

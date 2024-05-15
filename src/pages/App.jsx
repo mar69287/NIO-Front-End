@@ -46,7 +46,7 @@ function App() {
 
   return (
     <BrowserRouter>
-      <div className='flex flex-column justify-center items-start min-h-[100vh] min-w-screen pt-24'>
+      <div className='flex flex-column justify-center items-start min-h-[100vh] min-w-screen pt-[4.5rem] relative'>
         {
           client.account ? 
           <>

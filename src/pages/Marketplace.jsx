@@ -1,8 +1,10 @@
-
+import PageHeader from "../components/PageHeader"
 
 const Marketplace = () => {
   return (
-    <div>Marketplace</div>
+    <div>
+      <PageHeader title={'Marketplace'} />
+    </div>
   )
 }
 

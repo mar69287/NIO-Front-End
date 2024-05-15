@@ -1,8 +1,10 @@
-
+import PageHeader from "../components/PageHeader"
 
 const ABTsProject = () => {
   return (
-    <div>ABTsProject</div>
+    <div>
+      <PageHeader title={'ABTsProject'} />
+    </div>
   )
 }
 

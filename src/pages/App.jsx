@@ -9,7 +9,7 @@ import Marketplace from './Marketplace';
 import MyWallet from './MyWallet';
 import Settings from './Settings';
 import Developer from './Developer';
-import Support from './Developer';
+import Support from './Support';
 
 function App() {
   const [client, setClient] = useState({

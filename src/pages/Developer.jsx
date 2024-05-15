@@ -1,8 +1,10 @@
-
+import PageHeader from "../components/PageHeader"
 
 const Developer = () => {
   return (
-    <div>Developer</div>
+    <div>
+      <PageHeader title={'Developer'} />
+    </div>
   )
 }
 

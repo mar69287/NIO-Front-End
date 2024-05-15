@@ -4,6 +4,12 @@ import { ethers } from "ethers"
 import Dashboard from './Dashboard'
 import Home from './Home';
 import UserNavBar from '../components/UserNavBar';
+import ABTsProject from './ABTsProject';
+import Marketplace from './Marketplace';
+import MyWallet from './MyWallet';
+import Settings from './Settings';
+import Developer from './Developer';
+import Support from './Developer';
 
 function App() {
   const [client, setClient] = useState({
@@ -55,7 +61,13 @@ function App() {
           <>
             <UserNavBar client={client} />
             <Routes>
-              <Route path="/dashboard"  element={<Dashboard client={client} hasWeb3={hasWeb3} web3Handler={web3Handler}/>}/>
+              <Route path="/dashboard"  element={<Dashboard client={client}/>}/>
+              <Route path="/abts"  element={<ABTsProject client={client}/>}/>
+              <Route path="/marketplace"  element={<Marketplace client={client}/>}/>
+              <Route path="/myWallet"  element={<MyWallet client={client}/>}/>
+              <Route path="/settings"  element={<Settings client={client}/>}/>
+              <Route path="/developer"  element={<Developer client={client}/>}/>
+              <Route path="/support"  element={<Support client={client}/>}/>
               <Route path="*" element={<Navigate replace to="/dashboard" />} />
             </Routes>
           

@@ -1,8 +1,10 @@
-
+import PageHeader from "../components/PageHeader"
 
 const MyWallet = () => {
   return (
-    <div>MyWallet</div>
+    <div>
+      <PageHeader title={'My Wallet'} />
+    </div>
   )
 }
 

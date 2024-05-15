@@ -1,8 +1,10 @@
-
+import PageHeader from "../components/PageHeader"
 
 const Support = () => {
   return (
-    <div>Supports</div>
+    <div>
+      <PageHeader title={'Support'} />
+    </div>
   )
 }
 

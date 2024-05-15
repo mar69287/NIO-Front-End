@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom'
+import { Link, NavLink } from 'react-router-dom'
 import logo from '../assets/Logo.png'
 import { IoMdMenu, IoMdSettings } from "react-icons/io";
 import { useState } from 'react';
@@ -16,7 +16,7 @@ const UserNavBar = ({client}) => {
 
   return (
     <nav className={`bg-[#F9FAFF] text-black flex flex-col items-center justify-start w-screen absolute ${isMenuOpen && 'min-h-[100vh]'} top-0 z-[100] left-0 right-0`}>
-      <div className='h-[4.5rem] flex w-full  justify-between items-center px-5 py-6 border-b-2 border-slate-400'>
+      <div className='h-[4.5rem] flex w-full  justify-between items-center px-5 py-6 border-b-2 border-slate-300'>
           <div className='flex items-center justify-center'>
             <Link to="/">
               <img src={logo} alt="Logo" className="w-[7rem] sm:w-32" />
@@ -45,7 +45,7 @@ const UserNavBar = ({client}) => {
 
 export default UserNavBar
 
-const SideBarMenu = ({ client, setIsMenuOpen }) => {
+const SideBarMenu = ({ client, setIsMenuOpen, selected, setSelected}) => {
   return (
     <AnimatePresence>
         <motion.div initial={{ y: -100 }} animate={{ y: 0 }} exit={{ opacity: 0 }} className='flex-1 w-full flex flex-col justify-between md:hidden'>
@@ -66,50 +66,15 @@ const SideBarMenu = ({ client, setIsMenuOpen }) => {
                         </div>
                     </div>
                     <div className='flex flex-col gap-3 text-black items-start px-5 py-3 border-t-2 border-slate-300'>
-                        <Link to='/dashboard' onClick={() => setIsMenuOpen(false)} className='flex justify-start items-center gap-2 w-full'>
-                            <div className='text-lg text-[#000] cursor-pointer'>
-                                <MdDashboard />
-                            </div>
-                            <p className='text-base sm:text-lg'>Dashboard</p>
-                        </Link>
-                        <Link to='/abts' onClick={() => setIsMenuOpen(false)} className='flex justify-start items-center gap-2 w-full'>
-                            <div className='text-lg text-[#000] cursor-pointer'>
-                                <FaFile />
-                            </div>
-                            <p className='text-base sm:text-lg'>ABTs Projects</p>
-                        </Link>
-                        <Link to='/marketplace' onClick={() => setIsMenuOpen(false)} className='flex justify-start items-center gap-2 w-full'>
-                            <div className='text-lg text-[#000] cursor-pointer'>
-                                <FaStore />
-                            </div>
-                            <p className='text-base sm:text-lg'>Marketplace</p>
-                        </Link>
-                        <Link to='/myWallet' onClick={() => setIsMenuOpen(false)} className='flex justify-start items-center gap-2 w-full'>
-                            <div className='text-lg text-[#000] cursor-pointer'>
-                                <FaWallet />
-                            </div>
-                            <p className='text-base sm:text-lg'>My Wallet</p>
-                        </Link>
-                        <Link to='/settings' onClick={() => setIsMenuOpen(false)} className='flex justify-start items-center gap-2 w-full'>
-                            <div className='text-lg text-[#000] cursor-pointer'>
-                                <IoMdSettings />
-                            </div>
-                            <p className='text-base sm:text-lg'>Settings</p>
-                        </Link>
+                        <MenuLinks name={'Dashboard'} path={'dashboard'} Icon={MdDashboard} setIsMenuOpen={setIsMenuOpen}  selected={selected} setSelected={setSelected}/>
+                        <MenuLinks name={'ABTs Projects'} path={'abts'} Icon={FaFile} setIsMenuOpen={setIsMenuOpen}  selected={selected} setSelected={setSelected}/>
+                        <MenuLinks name={'Marketplace'} path={'marketplace'} Icon={FaStore} setIsMenuOpen={setIsMenuOpen}  selected={selected} setSelected={setSelected}/>
+                        <MenuLinks name={'My Wallet'} path={'myWallet'} Icon={FaWallet} setIsMenuOpen={setIsMenuOpen}  selected={selected} setSelected={setSelected}/>
+                        <MenuLinks name={'Settings'} path={'settings'} Icon={IoMdSettings} setIsMenuOpen={setIsMenuOpen}  selected={selected} setSelected={setSelected}/>
                     </div>
                     <div className='flex flex-col gap-3 text-black items-start px-5 py-3 border-t-2 border-slate-300'>
-                        <Link to='/developer' onClick={() => setIsMenuOpen(false)} className='flex justify-start items-center gap-2 w-full'>
-                            <div className='text-lg text-[#000] cursor-pointer'>
-                                <FaCode />
-                            </div>
-                            <p className='text-base sm:text-lg'>Developer</p>
-                        </Link>
-                        <Link to='/support' onClick={() => setIsMenuOpen(false)} className='flex justify-start items-center gap-2 w-full'>
-                            <div className='text-lg text-[#000] cursor-pointer'>
-                                <MdLiveHelp />
-                            </div>
-                            <p className='text-base sm:text-lg'>Support</p>
-                        </Link>
+                        <MenuLinks name={'Developer'} path={'developer'} Icon={FaCode} setIsMenuOpen={setIsMenuOpen}  selected={selected} setSelected={setSelected}/>
+                        <MenuLinks name={'Support'} path={'support'} Icon={MdLiveHelp} setIsMenuOpen={setIsMenuOpen}  selected={selected} setSelected={setSelected}/>
                     </div>
                 </div>
                 <div className='w-full border-t-2 text-red-600 border-slate-300 px-5 py-3 flex justify-start items-center gap-2'>
@@ -122,4 +87,15 @@ const SideBarMenu = ({ client, setIsMenuOpen }) => {
         </motion.div>
   </AnimatePresence>
   )
+}
+
+const MenuLinks = ({name, path, Icon, setIsMenuOpen}) => {
+    return (
+        <NavLink exact to={`/${path}`} onClick={() => setIsMenuOpen(false)} className={`text-zinc-400 flex justify-start items-center gap-2 w-full`}>
+            <div className='text-lg cursor-pointer'>
+                <Icon />
+            </div>
+            <p className='text-base sm:text-lg'>{name}</p>
+        </NavLink>
+    )
 }

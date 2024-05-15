@@ -1,8 +1,10 @@
-
+import PageHeader from "../components/PageHeader"
 
 const Settings = () => {
   return (
-    <div>Settings</div>
+    <div>
+      <PageHeader title={'Settings'} />
+    </div>
   )
 }
 

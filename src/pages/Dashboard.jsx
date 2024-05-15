@@ -1,8 +1,10 @@
-
+import PageHeader from "../components/PageHeader"
 
 const Dashboard = () => {
   return (
-    <div>Dashboard</div>
+    <div>
+      <PageHeader title={'Dashboard'} />
+    </div>
   )
 }
 

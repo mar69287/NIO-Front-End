@@ -26,13 +26,16 @@ function App() {
         chainId = res });
 
       const provider = new ethers.providers.Web3Provider(window.ethereum);
+      const balance = await provider.getBalance(account);
+      const balanceInEther = ethers.utils.formatEther(balance);
       
       const signer = await provider.getSigner();
       setClient({
         account: account,
         signer: signer,
         chainId: parseInt(chainId, 16),
-        provider: provider
+        provider: provider,
+        balanceInEther
       })
       
   };

@@ -23,6 +23,7 @@ const WalletDiagnosticModal = ({ isOpen, setIsOpen, client }) => {
                         <div>
                             <p>Account: {client.account.slice(0, 5) + '...' + client.account.slice(38, 42)}</p>
                             <p>Chain ID: {client.chainId}</p>
+                            <p>Balance In Ether: {client.balanceInEther} eth</p>
                             {/* We can display whatever other info we need here */}
                         </div>
                     )}

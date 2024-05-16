@@ -54,7 +54,7 @@ const UserNavBar = ({client}) => {
 
   return (
     <>
-      <MobileNavBar client={client} isMenuOpen={isMenuOpen} setIsMenuOpen={setIsMenuOpen} isOpen={isOpen} setIsOpen={setIsOpen} />
+      <MobileNavBar client={client} isMenuOpen={isMenuOpen} setIsMenuOpen={setIsMenuOpen} isOpen={isOpen} setIsOpen={setIsOpen} pageInfo={pageInfo} setHeaderPosition={setHeaderPosition} />
       <DesktopNavBar client={client} isOpen={isOpen} setIsOpen={setIsOpen} headerPosition={headerPosition} setHeaderPosition={setHeaderPosition} pageInfo={pageInfo} />
       <WalletDiagnosticModal client={client} isOpen={isOpen} setIsOpen={setIsOpen}/>
     </>
@@ -64,7 +64,7 @@ const UserNavBar = ({client}) => {
 
 export default UserNavBar
 
-const MobileNavBar = ({client, isMenuOpen, setIsMenuOpen, setIsOpen}) => {
+const MobileNavBar = ({client, isMenuOpen, setIsMenuOpen, setIsOpen, pageInfo, setHeaderPosition}) => {
   return (
     <nav className={`bg-[#F9FAFF] text-black flex flex-col items-center justify-start w-full absolute ${isMenuOpen && 'min-h-screen'} lg:hidden top-0 z-[50] left-0 right-0`}>
       <div className='h-[4.5rem] flex w-full  justify-between items-center px-5 py-6 border-b-2 border-slate-300'>
@@ -87,12 +87,12 @@ const MobileNavBar = ({client, isMenuOpen, setIsMenuOpen, setIsOpen}) => {
               </div>
           </div>
       </div>
-      { isMenuOpen && <DropdownMenu client={client} setIsMenuOpen={setIsMenuOpen}/>}
+      { isMenuOpen && <DropdownMenu client={client} setIsMenuOpen={setIsMenuOpen} pageInfo={pageInfo} setHeaderPosition={setHeaderPosition}  />}
     </nav>
   )
 }
 
-const DropdownMenu  = ({ client, setIsMenuOpen }) => {
+const DropdownMenu  = ({ client, setIsMenuOpen, pageInfo, setHeaderPosition }) => {
   return (
     <AnimatePresence>
         <motion.div initial={{ y: -100 }} animate={{ y: 0 }} exit={{ opacity: 0 }} className='flex-1 w-full flex flex-col justify-between lg:hidden'>
@@ -112,23 +112,28 @@ const DropdownMenu  = ({ client, setIsMenuOpen }) => {
                             </div>
                         </div>
                     </div>
-                    <div className='flex flex-col gap-3 text-black items-start px-5 py-3 border-t-2 border-slate-300 w-full'>
-                        <MenuLinks name={'Dashboard'} path={'dashboard'} Icon={MdDashboard} setIsMenuOpen={setIsMenuOpen}/>
-                        <MenuLinks name={'ABTs Projects'} path={'abts'} Icon={FaFile} setIsMenuOpen={setIsMenuOpen}/>
-                        <MenuLinks name={'Marketplace'} path={'marketplace'} Icon={FaStore} setIsMenuOpen={setIsMenuOpen}/>
-                        <MenuLinks name={'My Wallet'} path={'myWallet'} Icon={FaWallet} setIsMenuOpen={setIsMenuOpen}/>
-                        <MenuLinks name={'Settings'} path={'settings'} Icon={IoMdSettings} setIsMenuOpen={setIsMenuOpen}/>
-                    </div>
-                    <div className='flex flex-col gap-3 text-black items-start px-5 py-3 border-t-2 border-slate-300 w-full'>
-                        <MenuLinks name={'Developer'} path={'developer'} Icon={FaCode} setIsMenuOpen={setIsMenuOpen}/>
-                        <MenuLinks name={'Support'} path={'support'} Icon={MdLiveHelp} setIsMenuOpen={setIsMenuOpen}/>
+                    <div className='flex flex-col gap-3 text-black items-start px-5 py-3 border-t-2 border-b-2 border-slate-300 w-full'>
+                      {pageInfo.slice(0, 5).map((page, index) =>{
+                        return (
+                          <MenuLinks key={index} name={page.name} path={page.path} Icon={page.icon} setIsMenuOpen={setIsMenuOpen} setHeaderPosition={setHeaderPosition} idx={index} />
+                        )
+                      })}
                     </div>
                 </div>
-                <div className='w-full border-t-2 text-red-600 border-slate-300 px-5 py-3 flex justify-start items-center gap-2'>
-                    <div className='text-lg  cursor-pointer'>
-                        <FiLogOut />
+                <div className='flex flex-col w-full'>
+                  <div className='flex flex-col gap-3 text-black items-start px-5 py-3 w-full'>
+                      {pageInfo.slice(-2).map((page, index) =>{
+                        return (
+                          <MenuLinks key={index} name={page.name} path={page.path} Icon={page.icon} setIsMenuOpen={setIsMenuOpen} setHeaderPosition={setHeaderPosition} idx={index} />
+                        )
+                      })}
                     </div>
-                    <p className='text-base sm:text-lg'>Sign Out</p>
+                  <div className='w-full border-t-2 text-red-600 border-slate-300 px-5 py-3 flex justify-start items-center gap-2'>
+                      <div className='text-lg  cursor-pointer'>
+                          <FiLogOut />
+                      </div>
+                      <p className='text-base sm:text-lg'>Sign Out</p>
+                  </div>
                 </div>
             </div>
         </motion.div>
@@ -180,7 +185,7 @@ const DesktopNavBar = ({client, setIsOpen, headerPosition, setHeaderPosition, pa
 
 const SideMenu = ({ pageInfo, setHeaderPosition}) => {
   return (
-    <div style={{ minHeight: 'calc(100vh - 6rem)' }} className='absolute left-0 top-[6rem] w-60 xl:w-72 2xl:w-96 bg-[#F9FAFF] border-r-2 border-slate-300 hidden lg:flex flex-col justify-between items-start'>
+    <div className='absolute left-0 top-[6rem] min-h-full w-60 xl:w-72 2xl:w-96 bg-[#F9FAFF] border-r-2 border-slate-300 hidden lg:flex flex-col justify-between items-start'>
       <div className='flex flex-col gap-3 text-black items-start pl-10 py-7 w-full border-b-2 border-slate-300'>
           {pageInfo.slice(0, 5).map((page, index) =>{
             return (
@@ -218,9 +223,13 @@ const SideMenuLinks = ({ name, path, Icon, setHeaderPosition, idx}) => {
   )
 }
 
-const MenuLinks = ({name, path, Icon, setIsMenuOpen}) => {
+const MenuLinks = ({name, path, Icon, setIsMenuOpen, idx, setHeaderPosition}) => {
+  const handleClick = (index) => {
+    setIsMenuOpen(false);
+    setHeaderPosition(index)
+  };
     return (
-        <NavLink to={`/${path}`} onClick={() => setIsMenuOpen(false)} className={`text-zinc-400 flex justify-start items-center gap-2 w-full`}>
+        <NavLink to={`/${path}`} onClick={() => handleClick(idx)} className={`text-zinc-400 flex justify-start items-center gap-2 w-full`}>
             <div className='text-lg cursor-pointer'>
                 <Icon />
             </div>

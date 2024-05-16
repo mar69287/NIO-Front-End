@@ -55,22 +55,24 @@ function App() {
 
   return (
     <BrowserRouter>
-      <div className='flex flex-column justify-center items-start min-h-[100vh] min-w-screen pt-[4.5rem] relative'>
+      {/* <div className='flex flex-column justify-center items-start min-h-[100vh] min-w-screen mt-[4.5rem] lg:mt-[6rem] lg:ml-60 xl:ml-72 2xl:ml-96 relative'> */}
+      <div className='flex flex-column justify-center items-start min-h-[100vh] min-w-screen relative w-full'>
         {
           client.account ? 
           <>
             <UserNavBar client={client} />
-            <Routes>
-              <Route path="/dashboard"  element={<Dashboard client={client}/>}/>
-              <Route path="/abts"  element={<ABTsProject client={client}/>}/>
-              <Route path="/marketplace"  element={<Marketplace client={client}/>}/>
-              <Route path="/myWallet"  element={<MyWallet client={client}/>}/>
-              <Route path="/settings"  element={<Settings client={client}/>}/>
-              <Route path="/developer"  element={<Developer client={client}/>}/>
-              <Route path="/support"  element={<Support client={client}/>}/>
-              <Route path="*" element={<Navigate replace to="/dashboard" />} />
-            </Routes>
-          
+            <main className='mt-[4.5rem] lg:mt-[6rem] lg:ml-60 xl:ml-72 2xl:ml-96 relative w-full'>
+              <Routes>
+                <Route path="/dashboard"  element={<Dashboard client={client}/>}/>
+                <Route path="/abts"  element={<ABTsProject client={client}/>}/>
+                <Route path="/marketplace"  element={<Marketplace client={client}/>}/>
+                <Route path="/myWallet"  element={<MyWallet client={client}/>}/>
+                <Route path="/settings"  element={<Settings client={client}/>}/>
+                <Route path="/developer"  element={<Developer client={client}/>}/>
+                <Route path="/support"  element={<Support client={client}/>}/>
+                <Route path="*" element={<Navigate replace to="/dashboard" />} />
+              </Routes>
+            </main>
           </>
           :
           <>

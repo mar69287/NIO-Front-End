@@ -185,7 +185,7 @@ const DesktopNavBar = ({client, setIsOpen, headerPosition, setHeaderPosition, pa
 
 const SideMenu = ({ pageInfo, setHeaderPosition}) => {
   return (
-    <div className='absolute left-0 top-[6rem] min-h-full w-60 xl:w-72 2xl:w-96 bg-[#F9FAFF] border-r-2 border-slate-300 hidden lg:flex flex-col justify-between items-start'>
+    <div style={{minHeight: 'calc(100% - 6rem)'}} className='absolute left-0 top-[6rem] w-60 xl:w-72 2xl:w-96 bg-[#F9FAFF] border-r-2 border-slate-300 hidden lg:flex flex-col justify-between items-start'>
       <div className='flex flex-col gap-3 text-black items-start pl-10 py-7 w-full border-b-2 border-slate-300'>
           {pageInfo.slice(0, 5).map((page, index) =>{
             return (

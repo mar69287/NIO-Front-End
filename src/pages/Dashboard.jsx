@@ -13,7 +13,7 @@ const Dashboard = () => {
   return (
     <>
       <PageHeader title={'Dashboard'} />
-      <div className="w-full p-5 grid grid-cols-1 min-[370px]:grid-cols-2 md:grid-cols-6 min-[1500px]:grid-cols-10 gap-4">
+      <div className="w-full p-5 lg:px-10 lg:py-7 grid grid-cols-1 min-[370px]:grid-cols-2 md:grid-cols-6 min-[1500px]:grid-cols-10 gap-4">
         <ABTContainer title={'Total ABT created'} value={25} badgeValue={125} />
         <ABTContainer title={'Total ABT sold'} value={14} badgeValue={43} />
         <ABTContainer title={'Gross Revenue'} value={'$12,230'} badgeValue={'+45%'} revenueTime={revenueTime} setRevenueTime={setRevenueTime} revenueTimeFrames={revenueTimeFrames} />

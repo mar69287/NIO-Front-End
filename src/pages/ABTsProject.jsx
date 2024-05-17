@@ -2,7 +2,7 @@ import { useState } from "react";
 import DropDownMenu from "../components/DropDownMenu";
 import PageHeader from "../components/PageHeader"
 import { FaPen, FaEye } from "react-icons/fa";
-import { MdOutlineKeyboardArrowDown, MdFilterList, MdKeyboardBackspace, MdOutlineRemoveRedEye } from "react-icons/md";
+import { MdOutlineKeyboardArrowDown, MdFilterList, MdKeyboardBackspace, MdOutlineRemoveRedEye, MdArrowBackIos } from "react-icons/md";
 
 const ABTsProject = () => {
   const [myABTs, setMyABTs] = useState([])
@@ -63,7 +63,7 @@ const ABTsProject = () => {
             </div>   
           ) : (
             <div className="flex justify-center items-center gap-6 flex-col border-[1px] rounded-sm border-slate-300 p-3 sm:p-12 md:p-18">
-              <div className="w-full sm:w-80 md:w-96 flex justify-center items-center h-44 sm:h-52 md:h-64 bg-slate-100">
+              <div className="w-full sm:w-80 md:w-96 flex justify-center items-center h-44 sm:h-52 md:h-64 bg-slate-100 border-slate-400 border-[1px]">
                 image placeholder
               </div>
               <div className="flex flex-col justify-center items-center">
@@ -92,12 +92,18 @@ const MintPage = ({ setOpenMint, handleMinting}) => {
   return (
     <>
       <PageHeader title={'ABTs Projects'} />
-      <div className="w-full p-5 lg:px-10 grid grid-col-">
-        <div className="w-full pb-3">
+      <div className="w-full p-5 lg:py-7 lg:px-10 grid grid-cols-1 lg:grid-cols-2 lg:gap-x-10 2xl:gap-x-16">
+        <button onClick={() => setOpenMint(false)} className={`w-max lg:col-span-2 gap-2 mb-2 rounded flex justify-start items-center  text-black text-base md:text-base`}>
+              <div className="text-sm">
+                <MdArrowBackIos />
+              </div>
+              Back to Projects
+        </button>
+        <div className="w-full pb-3 lg:col-span-2">
           <h1 className="text-xl font-semibold mb-1">Create an ABT</h1>
           <p className="leading-5">Once your item has been minted, you will not be able to change any of its information</p>
         </div>
-        <div className="bg-slate-100 w-48 h-44 border-slate-400 border-[1px] flex flex-col justify-center items-center gap-0 mb-5">
+        <div className="bg-slate-100 w-48 h-44 md:w-72 md:h-80 lg:w-full lg:h-full 2xl:h-[45rem] min-[1700px]:h-[55rem] border-slate-400 border-[1px] flex flex-col justify-center items-center gap-0 mb-5">
           <div className='text-2xl lg:text-3xl'>
             <MdOutlineRemoveRedEye />
           </div>
@@ -105,7 +111,7 @@ const MintPage = ({ setOpenMint, handleMinting}) => {
         </div>
         <form className="w-full" onSubmit={handleMinting}>
           <div className="mb-3 flex flex-col justify-start items-start ">
-            <label className="text-gray-700 text-md mb-2 font-medium" htmlFor="name">
+            <label className="text-gray-700 text-md mb-2 lg:mb-3 font-medium lg:leading-3" htmlFor="name">
               Name
             </label>
             <input
@@ -153,9 +159,9 @@ const MintPage = ({ setOpenMint, handleMinting}) => {
           >
             Mint Asset
           </button>
-          <button onClick={() => setOpenMint(false)} className={`w-full mt-4 px-5 py-2 gap-3 rounded flex justify-center items-center bg-[#f02b2b] text-white`}>
+          {/* <button onClick={() => setOpenMint(false)} className={`w-full mt-4 px-5 py-2 gap-3 rounded flex justify-center items-center bg-[#f02b2b] text-white`}>
             Cancel
-          </button>
+          </button> */}
         </form>
       </div>
     </>

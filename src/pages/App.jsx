@@ -10,6 +10,7 @@ import MyWallet from './MyWallet';
 import Settings from './Settings';
 import Developer from './Developer';
 import Support from './Support';
+import ABTDetails from './ABTDetails';
 
 function App() {
   const [client, setClient] = useState({
@@ -70,6 +71,7 @@ function App() {
                 <Route path="/settings"  element={<Settings client={client}/>}/>
                 <Route path="/developer"  element={<Developer client={client}/>}/>
                 <Route path="/support"  element={<Support client={client}/>}/>
+                <Route path="/abt/:id"  element={<ABTDetails client={client}/>}/>
                 <Route path="*" element={<Navigate replace to="/dashboard" />} />
               </Routes>
             </main>

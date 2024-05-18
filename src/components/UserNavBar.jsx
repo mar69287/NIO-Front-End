@@ -48,7 +48,7 @@ const UserNavBar = ({client}) => {
     {
       'name': 'Support',
       'icon': MdLiveHelp,
-      'path': 'support'
+      'path': 'abt/1'
     },
   ]
 

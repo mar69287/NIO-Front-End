@@ -19,35 +19,35 @@ const ABTsProject = ({client}) => {
     const description = formData.get("description");
     const pdf = formData.get("pdf");
 
-    const metadata = {
-      "name": "Creative Name",
-      "description": "Lorum Ipsum", 
-      "external_url": "http://localhost:5173/", 
-      "image": "https://cdn.osxdaily.com/wp-content/uploads/2016/09/search-preview-mac-pdf-1.jpg", 
-      "document": "https://drive.google.com/file/d/12AOwLvCp_rb5d4dCutzOmMShV3md0xng/view?usp=sharing"
+    const data = {
+        "user_address": client.account,
+        "network": client.chainId,
+        "metadata": {
+            "name": "Creative Name",
+            "description": "Lorum Ipsum", 
+            "external_url": "http://localhost:5173/", 
+            "image": "https://cdn.osxdaily.com/wp-content/uploads/2016/09/search-preview-mac-pdf-1.jpg", 
+            "document": "https://drive.google.com/file/d/12AOwLvCp_rb5d4dCutzOmMShV3md0xng/view?usp=sharing"
+        }
     }
 
-      const data = {
-        network: client.chainId,
-        metadata,
-        user_address: client.address
-      };
+    console.log(data)
 
-      // console.log(data)
-      try {
-        const response = await createABT(data);
-        if (response.status === 201) {
-          const responseData = await response.json();
-          const tokenId = responseData.tokenId;
-          navigate(`/abt/${tokenId}`);
-        } else {
-          console.error('Minting failed:', response.status, response.statusText);
-        }
+        try {
+            const response = await createABT(data);
+            console.log(response)
+              // navigate(`/abt/${tokenId}`);
+            // if (response.status === 201) {
+            //   const responseData = await response.json();
+            //   const tokenId = responseData.tokenId;
+            // } else {
+            //   console.error('Minting failed:', response.status, response.statusText);
+            // }
 
-      } catch (error) {
-        console.error('Error:', error);
-      }
-  }
+          } catch (error) {
+            console.error('Error:', error);
+          }
+    }
 
   if (openMint) {
     return (

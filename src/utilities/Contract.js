@@ -2,7 +2,7 @@ const BASE_URL = 'http://localhost:3000/api';
 
 export async function createABT(data) {
   try {
-    const response = await fetch(`${BASE_URL}/token`, {
+    const response = await fetch(`${BASE_URL}/token/0`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -11,6 +11,7 @@ export async function createABT(data) {
     });
 
     if (!response.ok) {
+      console.log(response)
       throw new Error('Network response was not ok');
     }
 

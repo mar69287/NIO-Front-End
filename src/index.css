@@ -32,3 +32,9 @@ code {
   border: 1px solid #6338F1;
   background-color: #6338F1;
 }
+
+.dropDown.active {
+  background-color: #F9FAFF;
+  color: #6338F1;
+  border: none;
+}

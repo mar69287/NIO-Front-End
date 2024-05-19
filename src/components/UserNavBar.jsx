@@ -8,13 +8,16 @@ import WalletDiagnosticModal from './WalletDiagnosticModal';
 import { FaRegUser, FaFile, FaStore, FaWallet, FaUserCircle, FaCode } from "react-icons/fa";
 import { FiLogOut, FiChevronDown } from "react-icons/fi";
 import { MdDashboard, MdLiveHelp, MdCircleNotifications } from "react-icons/md";
+import AccountInfoDropDown from './AccountInfoDropDown';
 
 
 
 const UserNavBar = ({client}) => {
   const [isOpen, setIsOpen] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isDiagnosticOpen, setIsDiagnosticOpen] = useState(false);
   const [headerPosition, setHeaderPosition] = useState(0)
+
   const pageInfo = [
     {
       'name': 'Dashboard',
@@ -55,9 +58,9 @@ const UserNavBar = ({client}) => {
 
   return (
     <>
-      <MobileNavBar client={client} isMenuOpen={isMenuOpen} setIsMenuOpen={setIsMenuOpen} isOpen={isOpen} setIsOpen={setIsOpen} pageInfo={pageInfo} setHeaderPosition={setHeaderPosition} />
+      <MobileNavBar client={client} isMenuOpen={isMenuOpen} setIsMenuOpen={setIsMenuOpen} isDiagnosticOpen={isDiagnosticOpen} setIsDiagnosticOpen={setIsDiagnosticOpen} pageInfo={pageInfo} setHeaderPosition={setHeaderPosition} />
       <DesktopNavBar client={client} isOpen={isOpen} setIsOpen={setIsOpen} headerPosition={headerPosition} setHeaderPosition={setHeaderPosition} pageInfo={pageInfo} />
-      <WalletDiagnosticModal client={client} isOpen={isOpen} setIsOpen={setIsOpen}/>
+      <WalletDiagnosticModal client={client} isOpen={isDiagnosticOpen} setIsOpen={setIsDiagnosticOpen}/>
     </>
 
   )
@@ -65,9 +68,9 @@ const UserNavBar = ({client}) => {
 
 export default UserNavBar
 
-const MobileNavBar = ({client, isMenuOpen, setIsMenuOpen, setIsOpen, pageInfo, setHeaderPosition}) => {
+const MobileNavBar = ({client, isMenuOpen, setIsMenuOpen, setIsDiagnosticOpen, pageInfo, setHeaderPosition}) => {
   return (
-    <nav className={`bg-[#F9FAFF] text-black flex flex-col items-center justify-start w-full absolute ${isMenuOpen && 'min-h-screen'} lg:hidden top-0 z-[50] left-0 right-0`}>
+    <nav className={`bg-[#F9FAFF] text-black flex flex-col items-center justify-start w-full absolute ${isMenuOpen && 'min-h-screen'} xl:hidden top-0 z-[50] left-0 right-0`}>
       <div className='h-[4.5rem] flex w-full  justify-between items-center px-5 py-6 border-b-2 border-slate-300'>
           <div className='flex items-center justify-center'>
             <Link to="/dashboard">
@@ -78,7 +81,7 @@ const MobileNavBar = ({client, isMenuOpen, setIsMenuOpen, setIsOpen, pageInfo, s
               <div className='flex text-[#000]'>
                 {
                   client.account &&
-                      <div className='text-black text-xl xl:text-2xl' onClick={() => setIsOpen(true)}>
+                      <div className='text-black text-xl xl:text-2xl' onClick={() => setIsDiagnosticOpen(true)}>
                         <FaRegUser />
                       </div>
                 }
@@ -96,7 +99,7 @@ const MobileNavBar = ({client, isMenuOpen, setIsMenuOpen, setIsOpen, pageInfo, s
 const DropdownMenu  = ({ client, setIsMenuOpen, pageInfo, setHeaderPosition }) => {
   return (
     <AnimatePresence>
-        <motion.div initial={{ y: -100 }} animate={{ y: 0 }} exit={{ opacity: 0 }} className='flex-1 w-full flex flex-col justify-between lg:hidden'>
+        <motion.div initial={{ y: -100 }} animate={{ y: 0 }} exit={{ opacity: 0 }} className='flex-1 w-full flex flex-col justify-between xl:hidden'>
             <div onClick={(e) => e.stopPropagation()} className="w-full relative z-10 cursor-default flex flex-col justify-between flex-1">
                 <div className='flex flex-1 flex-col'>
                     <div className='px-5 py-4 flex justify-between items-center'>
@@ -142,10 +145,10 @@ const DropdownMenu  = ({ client, setIsMenuOpen, pageInfo, setHeaderPosition }) =
   )
 }
 
-const DesktopNavBar = ({client, setIsOpen, headerPosition, setHeaderPosition, pageInfo}) => {
+const DesktopNavBar = ({client, setIsOpen, headerPosition, setHeaderPosition, pageInfo, isOpen}) => {
   return (
     <>
-      <nav className={`bg-[#F9FAFF] text-black hidden lg:flex flex-col items-center justify-start w-screen fixed top-0 z-[50] left-0 right-0`}>
+      <nav className={`bg-[#F9FAFF] text-black hidden xl:flex flex-col items-center justify-start w-screen fixed top-0 z-[50] left-0 right-0`}>
         <div className='h-[5rem] flex w-full  justify-between items-center'>
           <div className='flex items-center justify-start h-full border-b-2 border-zinc-600'>
             <div className=' bg-[#2C2B29] flex items-center justify-start h-full pl-10 py-6 w-72 2xl:w-80'>
@@ -164,16 +167,20 @@ const DesktopNavBar = ({client, setIsOpen, headerPosition, setHeaderPosition, pa
                 <p className='text-2xl font-medium 2xl:text-3xl'>{pageInfo[headerPosition].name}</p>
               </div>
               <div className='flex items-center justify-end gap-7'>
-                <div className='bg-white border-[1px] border-slate-400 rounded-sm flex justify-center items-center gap-2 px-3 py-1'>
-                    <p className='text-sm sm:text-lg'>Matic</p>
-                    <div className='text-lg cursor-pointer'>
-                        <FiChevronDown />
+                <div className='bg-white border-[1px] border-slate-400 rounded flex justify-center items-center gap-2 px-3 py-1'>
+                    <div className='text-lg pr-1'>
+                        <FaWallet />
                     </div>
+                    <p className='text-sm sm:text-lg'>{client.balanceInEther}</p>
+                    <p className='text-sm sm:text-lg'>{client.nativeCurrency?.symbol}</p>
+                    {/* <div className='text-lg cursor-pointer'>
+                        <FiChevronDown />
+                    </div> */}
                 </div>
                 <div className='text-black text-3xl 2xl:text-4xl'>
                   <MdCircleNotifications />
                 </div>
-                <div className='flex justify-start items-center gap-3 cursor-pointer ' onClick={() => setIsOpen(true)}>
+                <div className=' flex justify-start items-center gap-3 cursor-pointer relative' onClick={() => setIsOpen(!isOpen)}>
                     <div className='text-[1.6rem] 2xl:text-[2rem] text-[#000]'>
                         <FaUserCircle />
                     </div>
@@ -181,6 +188,7 @@ const DesktopNavBar = ({client, setIsOpen, headerPosition, setHeaderPosition, pa
                     <div className='text-md'>
                       <FiChevronDown />
                     </div>
+                    {isOpen && <AccountInfoDropDown client={client} />}
                 </div>
               </div>
           </div>
@@ -222,7 +230,7 @@ const SideMenu = ({ pageInfo, setHeaderPosition}) => {
 
 const SideMenuLinks = ({ name, path, Icon, setHeaderPosition, idx}) => {
   return (
-    <NavLink to={`/${path}`} onClick={() => setHeaderPosition(idx)} className={`text-zinc-400 border-[1px] border-transparent rounded-md py-[10px] px-3 flex justify-start items-center gap-4 w-full`}>
+    <NavLink to={`/${path}`} onClick={() => setHeaderPosition(idx)} className={`text-zinc-400 border-[1px] border-transparent rounded py-[10px] px-3 flex justify-start items-center gap-4 w-full`}>
         <div className='text-lg'>
             <Icon />
         </div>
@@ -237,7 +245,7 @@ const MenuLinks = ({name, path, Icon, setIsMenuOpen, idx, setHeaderPosition}) =>
     setHeaderPosition(index)
   };
     return (
-        <NavLink to={`/${path}`} onClick={() => handleClick(idx)} className={`text-zinc-400 flex justify-start items-center gap-2 w-full`}>
+        <NavLink to={`/${path}`} onClick={() => handleClick(idx)} className={`dropDown text-zinc-400 flex justify-start items-center gap-2 w-full`}>
             <div className='text-lg cursor-pointer'>
                 <Icon />
             </div>

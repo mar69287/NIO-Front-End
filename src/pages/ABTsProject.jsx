@@ -3,25 +3,50 @@ import DropDownMenu from "../components/DropDownMenu";
 import PageHeader from "../components/PageHeader"
 import { FaPen, FaEye } from "react-icons/fa";
 import { MdOutlineKeyboardArrowDown, MdFilterList, MdKeyboardBackspace, MdOutlineRemoveRedEye, MdArrowBackIos } from "react-icons/md";
+import { createABT } from "../utilities/Contract";
+import { useNavigate } from "react-router-dom";
 
-const ABTsProject = () => {
+const ABTsProject = ({client}) => {
   const [myABTs, setMyABTs] = useState([])
   const [abtFilter, setAbtFilter] = useState('Yearly')
   const [openMint, setOpenMint] = useState(false)
-  const [newAbtInfo, setNewAbtInfo] = useState({})
+  const navigate = useNavigate;
 
   const handleMinting = async (e) => {
     e.preventDefault();
     const formData = new FormData(event.target);
     const name = formData.get("name");
-    const symbol = formData.get("symbol");
     const description = formData.get("description");
     const pdf = formData.get("pdf");
 
-    console.log("Name:", name);
-    console.log("Symbol:", symbol);
-    console.log("Description:", description);
-    console.log("PDF File:", pdf);
+    const metadata = {
+      "name": "Creative Name",
+      "description": "Lorum Ipsum", 
+      "external_url": "http://localhost:5173/", 
+      "image": "https://cdn.osxdaily.com/wp-content/uploads/2016/09/search-preview-mac-pdf-1.jpg", 
+      "document": "https://drive.google.com/file/d/12AOwLvCp_rb5d4dCutzOmMShV3md0xng/view?usp=sharing"
+    }
+
+      const data = {
+        network: client.chainId,
+        metadata,
+        user_address: client.address
+      };
+
+      // console.log(data)
+      try {
+        const response = await createABT(data);
+        if (response.status === 201) {
+          const responseData = await response.json();
+          const tokenId = responseData.tokenId;
+          navigate(`/abt/${tokenId}`);
+        } else {
+          console.error('Minting failed:', response.status, response.statusText);
+        }
+
+      } catch (error) {
+        console.error('Error:', error);
+      }
   }
 
   if (openMint) {
@@ -121,7 +146,7 @@ const MintPage = ({ setOpenMint, handleMinting}) => {
               type="text"
             />
           </div>
-          <div className="mb-3 flex flex-col justify-start items-start ">
+          {/* <div className="mb-3 flex flex-col justify-start items-start ">
             <label className="text-gray-700 text-md mb-2 font-medium" htmlFor="symbol">
               Symbol
             </label>
@@ -131,7 +156,7 @@ const MintPage = ({ setOpenMint, handleMinting}) => {
               name="symbol"
               type="text"
             />
-          </div>
+          </div> */}
           <div className="mb-3 flex flex-col justify-start items-start ">
             <label className="text-gray-700 text-md mb-2 font-medium" htmlFor="pdf">
               Contract document
@@ -159,9 +184,6 @@ const MintPage = ({ setOpenMint, handleMinting}) => {
           >
             Mint Asset
           </button>
-          {/* <button onClick={() => setOpenMint(false)} className={`w-full mt-4 px-5 py-2 gap-3 rounded flex justify-center items-center bg-[#f02b2b] text-white`}>
-            Cancel
-          </button> */}
         </form>
       </div>
     </>

@@ -28,5 +28,7 @@ code {
 }
 
 .active {
-  color: darkorchid
+  color: #FFF;
+  border: 1px solid #6338F1;
+  background-color: #6338F1;
 }

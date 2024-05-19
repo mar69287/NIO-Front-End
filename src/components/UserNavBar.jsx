@@ -1,5 +1,6 @@
 import { Link, NavLink } from 'react-router-dom'
 import logo from '../assets/Logo.png'
+import whiteLogo from '../assets/LogoWhite.png'
 import { IoMdMenu, IoMdSettings } from "react-icons/io";
 import { useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
@@ -145,35 +146,42 @@ const DesktopNavBar = ({client, setIsOpen, headerPosition, setHeaderPosition, pa
   return (
     <>
       <nav className={`bg-[#F9FAFF] text-black hidden lg:flex flex-col items-center justify-start w-screen fixed top-0 z-[50] left-0 right-0`}>
-        <div className='h-[6rem] flex w-full  justify-between items-center border-b-2 border-slate-300'>
-          <div className='flex items-center justify-start h-full'>
-            <div className='flex items-center justify-start border-r-2 border-slate-300 h-full pl-10 py-6 w-60 xl:w-72 2xl:w-96'>
+        <div className='h-[5rem] flex w-full  justify-between items-center'>
+          <div className='flex items-center justify-start h-full border-b-2 border-zinc-600'>
+            <div className=' bg-[#2C2B29] flex items-center justify-start h-full pl-10 py-6 w-72 2xl:w-80'>
               <Link to="/dashboard">
-                <img src={logo} alt="Logo" className="w-[7rem] lg:w-36 2xl:w-40" />
+                <img src={whiteLogo} alt="Logo" className="w-[7rem] lg:w-36 2xl:w-40" />
               </Link>
             </div>
-            <div className='pl-10'>
+            {/* <div className='pl-10'>
               <p className='text-2xl font-medium 2xl:text-3xl'>{pageInfo[headerPosition].name}</p>
-            </div>
+            </div> */}
           </div>
-          <div className='flex items-center justify-end gap-7 px-10 py-6'>
-              <div className='bg-white border-[1px] border-slate-400 rounded-sm flex justify-center items-center gap-2 px-3 py-1'>
-                  <p className='text-sm sm:text-lg'>Matic</p>
-                  <div className='text-lg cursor-pointer'>
+          <div 
+            style={{ boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)' }}
+            className='flex items-center justify-between px-10 py-5 w-full'>
+              <div className='grid place-content-center'>
+                <p className='text-2xl font-medium 2xl:text-3xl'>{pageInfo[headerPosition].name}</p>
+              </div>
+              <div className='flex items-center justify-end gap-7'>
+                <div className='bg-white border-[1px] border-slate-400 rounded-sm flex justify-center items-center gap-2 px-3 py-1'>
+                    <p className='text-sm sm:text-lg'>Matic</p>
+                    <div className='text-lg cursor-pointer'>
+                        <FiChevronDown />
+                    </div>
+                </div>
+                <div className='text-black text-3xl 2xl:text-4xl'>
+                  <MdCircleNotifications />
+                </div>
+                <div className='flex justify-start items-center gap-3 cursor-pointer ' onClick={() => setIsOpen(true)}>
+                    <div className='text-[1.6rem] 2xl:text-[2rem] text-[#000]'>
+                        <FaUserCircle />
+                    </div>
+                    <p className='text-md 2xl:text-lg'>{client.account.slice(0, 5) + '...' + client.account.slice(38, 42)}</p>
+                    <div className='text-md'>
                       <FiChevronDown />
-                  </div>
-              </div>
-              <div className='text-black text-3xl 2xl:text-4xl'>
-                <MdCircleNotifications />
-              </div>
-              <div className='flex justify-start items-center gap-3 cursor-pointer ' onClick={() => setIsOpen(true)}>
-                  <div className='text-[1.6rem] 2xl:text-[2rem] text-[#000]'>
-                      <FaUserCircle />
-                  </div>
-                  <p className='text-md 2xl:text-lg'>{client.account.slice(0, 5) + '...' + client.account.slice(38, 42)}</p>
-                  <div className='text-md'>
-                    <FiChevronDown />
-                  </div>
+                    </div>
+                </div>
               </div>
           </div>
         </div>
@@ -185,8 +193,8 @@ const DesktopNavBar = ({client, setIsOpen, headerPosition, setHeaderPosition, pa
 
 const SideMenu = ({ pageInfo, setHeaderPosition}) => {
   return (
-    <div style={{minHeight: 'calc(100% - 6rem)'}} className='absolute left-0 top-[6rem] w-60 xl:w-72 2xl:w-96 bg-[#F9FAFF] border-r-2 border-slate-300 hidden lg:flex flex-col justify-between items-start'>
-      <div className='flex flex-col gap-3 text-black items-start pl-10 py-7 w-full border-b-2 border-slate-300'>
+    <div style={{minHeight: 'calc(100% - 5rem)'}} className='absolute left-0 top-[5rem] w-72 2xl:w-80 bg-[#2C2B29] border-r- border-slate-300 hidden xl:flex flex-col justify-between items-start'>
+      <div className='flex flex-col gap-3 text-black items-start px-10 py-7 w-full border-b-2 border-zinc-600'>
           {pageInfo.slice(0, 5).map((page, index) =>{
             return (
               <SideMenuLinks key={index} name={page.name} path={page.path} Icon={page.icon} setHeaderPosition={setHeaderPosition} idx={index} />
@@ -194,7 +202,7 @@ const SideMenu = ({ pageInfo, setHeaderPosition}) => {
           })}
       </div>
       <div className='flex flex-col w-full'>
-        <div className='flex flex-col gap-3 text-black items-start pl-10 py-7 w-full border-b-2 border-slate-300 '>
+      <div className='flex flex-col gap-3 text-black items-start px-10 py-7 w-full border-b-2 border-zinc-600 '>
             {pageInfo.slice(-2).map((page, index) =>{
               return (
                 <SideMenuLinks key={index} name={page.name} path={page.path} Icon={page.icon} setHeaderPosition={setHeaderPosition} idx={index + 5} />
@@ -214,11 +222,11 @@ const SideMenu = ({ pageInfo, setHeaderPosition}) => {
 
 const SideMenuLinks = ({ name, path, Icon, setHeaderPosition, idx}) => {
   return (
-    <NavLink to={`/${path}`} onClick={() => setHeaderPosition(idx)} className={`text-zinc-400 flex justify-start items-center gap-2 w-full`}>
+    <NavLink to={`/${path}`} onClick={() => setHeaderPosition(idx)} className={`text-zinc-400 border-[1px] border-transparent rounded-md py-[10px] px-3 flex justify-start items-center gap-4 w-full`}>
         <div className='text-lg'>
             <Icon />
         </div>
-        <p className='text-md xl:text-lg 2xl:text-xl'>{name}</p>
+        <p className='text-sm xl:text-md 2xl:text-lg'>{name}</p>
     </NavLink>
   )
 }

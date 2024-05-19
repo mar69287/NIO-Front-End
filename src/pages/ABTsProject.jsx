@@ -5,12 +5,16 @@ import { FaPen, FaEye } from "react-icons/fa";
 import { MdOutlineKeyboardArrowDown, MdFilterList, MdKeyboardBackspace, MdOutlineRemoveRedEye, MdArrowBackIos } from "react-icons/md";
 import { createABT } from "../utilities/Contract";
 import { useNavigate } from "react-router-dom";
+import Upload from '../pdfUpload/Upload'
 
 const ABTsProject = ({client}) => {
   const [myABTs, setMyABTs] = useState([])
   const [abtFilter, setAbtFilter] = useState('Yearly')
   const [openMint, setOpenMint] = useState(false)
-  const navigate = useNavigate;
+  const navigate = useNavigate();
+  const [pdfFile, setPdfFile] = useState({});
+  const [uploaded, setUploaded] = useState(null);
+  const [loading, setLoading] = useState(false)
 
   const handleMinting = async (e) => {
     e.preventDefault();
@@ -23,27 +27,22 @@ const ABTsProject = ({client}) => {
         "user_address": client.account,
         "network": client.chainId,
         "metadata": {
-            "name": "Creative Name",
-            "description": "Lorum Ipsum", 
+            "name": name,
+            "description": description, 
             "external_url": "http://localhost:5173/", 
             "image": "https://cdn.osxdaily.com/wp-content/uploads/2016/09/search-preview-mac-pdf-1.jpg", 
             "document": "https://drive.google.com/file/d/12AOwLvCp_rb5d4dCutzOmMShV3md0xng/view?usp=sharing"
         }
     }
 
-    console.log(data)
+    // console.log(data)
 
         try {
             const response = await createABT(data);
-            console.log(response)
-              // navigate(`/abt/${tokenId}`);
-            // if (response.status === 201) {
-            //   const responseData = await response.json();
-            //   const tokenId = responseData.tokenId;
-            // } else {
-            //   console.error('Minting failed:', response.status, response.statusText);
-            // }
-
+            const tokenId = response.tokenId
+            console.log(typeof tokenId)
+            console.log(tokenId)
+            navigate(`/abt/${tokenId}`);
           } catch (error) {
             console.error('Error:', error);
           }
@@ -51,9 +50,10 @@ const ABTsProject = ({client}) => {
 
   if (openMint) {
     return (
-      <MintPage setOpenMint={setOpenMint} handleMinting={handleMinting} />
+      <MintPage setOpenMint={setOpenMint} handleMinting={handleMinting} setPdfFile={setPdfFile} pdfFile={pdfFile} setUploaded={setUploaded} uploaded={uploaded} />
     )
   }
+
 
   return (
     <>
@@ -113,7 +113,7 @@ const ABTsProject = ({client}) => {
 
 export default ABTsProject
 
-const MintPage = ({ setOpenMint, handleMinting}) => {
+const MintPage = ({ setOpenMint, handleMinting, pdfFile, setPdfFile, setUploaded, uploaded}) => {
   return (
     <>
       <PageHeader title={'ABTs Projects'} />
@@ -157,16 +157,17 @@ const MintPage = ({ setOpenMint, handleMinting}) => {
               type="text"
             />
           </div> */}
-          <div className="mb-3 flex flex-col justify-start items-start ">
+          {/* <div className="mb-3 flex flex-col justify-start items-start ">
             <label className="text-gray-700 text-md mb-2 font-medium" htmlFor="pdf">
               Contract document
             </label>
             <label className="w-full flex justify-center gap-1 items-center bg-white text-blue rounded shadow tracking-wide border border-blue cursor-pointer py-[7px]">
               <span className="text-base leading-normal">Add document</span>
               <span className="text-base leading-normal text-slate-500">(pdf)</span>
-              <input type='file' id="pdf" accept=".pdf" name="pdf" className="hidden" />
+              <input type='file' id="pdf" accept=".pdf" name="pdf" className="hidden" onChange={handlePDF}/>
             </label>
-          </div>
+          </div> */}
+          <Upload pdfFile={pdfFile} setPdfFile={setPdfFile} setUploaded={setUploaded} uploaded={uploaded} />
           <div className="mb-3 flex flex-col justify-start items-start ">
             <label className="text-gray-700 text-md mb-2 font-medium" htmlFor="description">
               Description

@@ -1,8 +1,9 @@
 import { useParams } from 'react-router-dom';
 import PageHeader from '../components/PageHeader';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { MdOutlineRemoveRedEye } from 'react-icons/md';
 import Accordian from '../components/Accordian';
+import { fetchABT } from '../utilities/Contract';
 
 const ABTDetails = ({ client }) => {
   const { id } = useParams();
@@ -16,6 +17,25 @@ const ABTDetails = ({ client }) => {
   })
   const [sale, setSale] = useState(false)
   const [isMyAbt, setIsMyAbt] = useState(true)
+
+  const fetchABTDetails = async () => {
+    try {
+        const abtDetails = await fetchABT(id);
+        // const response = await fetch()
+        setAbtInfo({
+            'name': abtDetails.name,
+            'image': abtDetails.image,
+            'document': abtDetails.document,
+            'description': abtDetails.description
+        })
+
+    } catch(err) {
+        console.error('Error fetching abt details:', err);
+    }
+  }
+  useEffect(() => {
+    fetchABTDetails();
+  }, [id]);
 
   return (
     <>

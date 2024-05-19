@@ -62,7 +62,7 @@ function App() {
           client.account ? 
           <>
             <UserNavBar client={client} />
-            <main className='mt-[4.5rem] lg:mt-[6rem] lg:ml-60 xl:ml-72 2xl:ml-96 relative w-full'>
+            <main className='mt-[4.5rem] lg:mt-[5rem] lg:ml-60 xl:ml-72 2xl:ml-80 relative w-full'>
               <Routes>
                 <Route path="/dashboard"  element={<Dashboard client={client}/>}/>
                 <Route path="/abts"  element={<ABTsProject client={client}/>}/>

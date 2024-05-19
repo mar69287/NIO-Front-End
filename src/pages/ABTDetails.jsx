@@ -40,7 +40,7 @@ const ABTDetails = ({ client }) => {
   return (
     <>
         <PageHeader title={'ABT Details'} />
-        <div className='w-full p-5 lg:py-7 lg:px-10 grid grid-cols-1 lg:grid-cols-2 lg:gap-x-10 2xl:gap-x-16'>
+        <div className='w-full p-5 lg:p-10 grid grid-cols-1 lg:grid-cols-2 lg:gap-x-10 2xl:gap-x-16'>
             <div className="w-full pb-3 lg:col-span-2">
                 <h1 className="text-xl font-semibold mb-1">{abtInfo.name}</h1>
                 <p className="text-base ">Created by: {abtInfo.creator}</p>

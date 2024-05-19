@@ -11,6 +11,7 @@ import Settings from './Settings';
 import Developer from './Developer';
 import Support from './Support';
 import ABTDetails from './ABTDetails';
+import chainConfig from '../../utils/ChainConfig.json'
 
 function App() {
   const [client, setClient] = useState({
@@ -34,18 +35,32 @@ function App() {
 
       const provider = new ethers.providers.Web3Provider(window.ethereum);
       const balance = await provider.getBalance(account);
-      const balanceInEther = ethers.utils.formatEther(balance);
+      let balanceInEther = ethers.utils.formatEther(balance);
+      balanceInEther = Math.floor(balanceInEther)
       
       const signer = await provider.getSigner();
+      const nativeCurrency = getNativeCurrency(parseInt(chainId, 16));
+
       setClient({
         account: account,
         signer: signer,
         chainId: parseInt(chainId, 16),
         provider: provider,
-        balanceInEther
+        balanceInEther,
+        nativeCurrency
       })
       
   };
+
+  const getNativeCurrency = (chainId) => {
+    for (const key in chainConfig) {
+      if (chainConfig[key].id === chainId) {
+        return chainConfig[key].nativeCurrency;
+      }
+    }
+    return null; 
+  };
+  
 
   if (window.ethereum) {
     window.ethereum.on('chainChanged', () => {window.location.reload()});
@@ -62,7 +77,7 @@ function App() {
           client.account ? 
           <>
             <UserNavBar client={client} />
-            <main className='mt-[4.5rem] lg:mt-[5rem] lg:ml-60 xl:ml-72 2xl:ml-80 relative w-full'>
+            <main className='mt-[4.5rem] lg:mt-[5rem] xl:ml-72 2xl:ml-80 relative w-full'>
               <Routes>
                 <Route path="/dashboard"  element={<Dashboard client={client}/>}/>
                 <Route path="/abts"  element={<ABTsProject client={client}/>}/>

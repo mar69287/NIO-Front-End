@@ -72,7 +72,7 @@ function App() {
   return (
     <BrowserRouter>
       {/* <div className='flex flex-column justify-center items-start min-h-[100vh] min-w-screen mt-[4.5rem] lg:mt-[6rem] lg:ml-60 xl:ml-72 2xl:ml-96 relative'> */}
-      <div className='flex flex-column justify-center items-start min-h-[100vh] min-w-screen relative w-full'>
+      <div className='flex justify-start items-start min-h-[100vh] min-w-screen relative w-full'>
         {
           client.account ? 
           <>

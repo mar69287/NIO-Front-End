@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 
 const apiUrl = 'http://localhost:3000/api/upload';
-const chunkSize = 10 * 1024; // Adjust chunk size as needed
+const chunkSize = 10 * 1024; 
 
 const Upload = ({ setPdfFile, pdfFile, setUploaded, uploaded }) => {
     const [chunkIndex, setChunkIndex] = useState(null);
@@ -37,12 +37,12 @@ const Upload = ({ setPdfFile, pdfFile, setUploaded, uploaded }) => {
 
         const reader = new FileReader();
         const from = chunkIndex * chunkSize;
-        const to = Math.min(from + chunkSize, pdfFile.size); // Ensure last chunk is correctly sliced
+        const to = Math.min(from + chunkSize, pdfFile.size); 
         const blob = pdfFile.slice(from, to);
 
         reader.onload = async (event) => {
             const totalChunks = Math.ceil(pdfFile.size / chunkSize);
-            const base64Data = event.target.result.split(',')[1]; // Get base64 part of DataURL
+            const base64Data = event.target.result.split(',')[1]; 
             const payload = {
                 ext: pdfFile.name.split('.').pop(),
                 chunk: `data:application/pdf;base64,${base64Data}`,
@@ -51,12 +51,12 @@ const Upload = ({ setPdfFile, pdfFile, setUploaded, uploaded }) => {
                 baseName: baseName
             };
 
-            
+
 
             try {
                 console.log(`Uploading chunk ${chunkIndex + 1} of ${totalChunks}`);
                 const response = await axios.post(apiUrl, payload, {
-                    headers: { 'Content-Type': 'application/json' }
+                    headers: { 'Content-Type': 'application/octet-stream' }
                 });
                 const chunkNum = chunkIndex + 1;
                 const lastChunk = (chunkNum === totalChunks);

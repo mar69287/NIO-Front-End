@@ -31,7 +31,7 @@ const MintABT = ({ client, setOpenMint, pdfFile, setPdfFile }) => {
             "metadata": {
                 "name": abtName,
                 "description": description, 
-                "external_url": "http://localhost:5173/", 
+                "externalURL": "http://localhost:5173/", 
                 "image": "https://cdn.osxdaily.com/wp-content/uploads/2016/09/search-preview-mac-pdf-1.jpg", 
                 document
             }

@@ -6,7 +6,7 @@ import { FaCheck } from "react-icons/fa";
 const apiUrl = 'http://localhost:3000/api/upload';
 const chunkSize = 10 * 1024; 
 
-const Upload = ({ setPdfFile, pdfFile, setUploaded, uploaded, name, setPdfFilePath }) => {
+const Upload = ({ setPdfFile, pdfFile, setUploaded, uploaded, name, setPdfFilePath, setPdfImagePath }) => {
     const [chunkIndex, setChunkIndex] = useState(null);
     const [baseName, setBaseName] = useState('');
 
@@ -62,11 +62,14 @@ const Upload = ({ setPdfFile, pdfFile, setUploaded, uploaded, name, setPdfFilePa
                 });
                 const chunkNum = chunkIndex + 1;
                 const lastChunk = (chunkNum === totalChunks);
-                // console.log(response)
+                console.log(response)
                 if (lastChunk) {
                     const filePath = response.data.file.replace(/^\.\//, '/');
-                    console.log(filePath);
+                    const imagePath = response.data.image.replace(/^\.\//, '/')
+                    // console.log(filePath);
                     console.log("Document Sent!");
+                    console.log('image path:', imagePath)
+                    setPdfImagePath(imagePath)
                     setPdfFilePath(filePath)
                     setUploaded(true);
                     setChunkIndex(null);

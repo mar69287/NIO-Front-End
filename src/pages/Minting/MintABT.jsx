@@ -1,9 +1,10 @@
 import { useState } from "react";
 import PageHeader from "../../components/PageHeader"
-import Upload from "../../pdfUpload/Upload"
+import Upload from "../pdfUpload/Upload"
 import { MdOutlineRemoveRedEye, MdArrowBackIos } from "react-icons/md";
 import { createABT } from "../../utilities/Contract";
 import { useNavigate } from "react-router-dom";
+import PdfContainer from "../../components/PdfContainer";
 
 const pdfURL = 'http://localhost:3000'
 
@@ -13,7 +14,6 @@ const MintABT = ({ client, setOpenMint, pdfFile, setPdfFile }) => {
     const [uploadedPDF, setUploadedPDF] = useState(null);
     const [pdfFilePath, setPdfFilePath] = useState('');
     const [pdfImagePath, setPdfImagePath] = useState('');
-
     const navigate = useNavigate();
 
     const handleMinting = async (e) => {
@@ -23,6 +23,7 @@ const MintABT = ({ client, setOpenMint, pdfFile, setPdfFile }) => {
         const formData = new FormData(event.target);
         const abtName = formData.get("name");
         const description = formData.get("description");
+        const document = `${pdfURL}${pdfFilePath}`
     
         const data = {
             "user_address": client.account,
@@ -32,17 +33,17 @@ const MintABT = ({ client, setOpenMint, pdfFile, setPdfFile }) => {
                 "description": description, 
                 "external_url": "http://localhost:5173/", 
                 "image": "https://cdn.osxdaily.com/wp-content/uploads/2016/09/search-preview-mac-pdf-1.jpg", 
-                "document": "https://drive.google.com/file/d/12AOwLvCp_rb5d4dCutzOmMShV3md0xng/view?usp=sharing"
+                document
             }
-        }
-  
+        }  
     
         try {
             const response = await createABT(data);
-            const tokenId = response.tokenId
+            console.log(response)
+            // const tokenId = response.tokenId
             // console.log(typeof tokenId)
             // console.log(tokenId)
-            navigate(`/abt/${tokenId}`);
+            // navigate(`/abt/${tokenId}`);
           } catch (error) {
             console.error('Error:', error);
         }
@@ -51,7 +52,7 @@ const MintABT = ({ client, setOpenMint, pdfFile, setPdfFile }) => {
   return (
     <>
     <PageHeader title={'Mint Page'} />
-    <div className="w-full p-5 lg:py-7 lg:px-10 grid grid-cols-1 lg:grid-cols-2 lg:gap-x-10 2xl:gap-x-16">
+    <div className="w-full p-5 lg:py-7 lg:px-10 grid grid-cols-1 lg:grid-cols-2 lg:gap-x-10 2xl:gap-x-16 justify-items-stretch">
       <button onClick={() => setOpenMint(false)} className={`w-max lg:col-span-2 gap-2 mb-2 rounded flex justify-start items-center  text-black text-base md:text-base`}>
             <div className="text-sm">
               <MdArrowBackIos />
@@ -62,31 +63,21 @@ const MintABT = ({ client, setOpenMint, pdfFile, setPdfFile }) => {
         <h1 className="text-xl font-semibold mb-1">Create an ABT</h1>
         <p className="leading-5">Once your item has been minted, you will not be able to change any of its information</p>
       </div>
-      <div className="bg-slate-100 w-48 h-44 md:w-72 md:h-80 lg:w-full lg:h-full 2xl:h-[45rem] min-[1700px]:h-[55rem] border-slate-400 border-[1px] flex flex-col justify-center items-center gap-0 mb-5">
-        {
-          pdfFilePath ? (
-            <div className="flex flex-col items-center justify-center gap-2">
-              <a href={`${pdfURL}${pdfFilePath}`} target="_blank" rel="noopener noreferrer" className="p-2 w-32 grid place-content-center bg-accent1 font-medium text-white rounded">Preview Now</a>
-              <button className="p-2 w-32 grid place-content-center bg-accent3 font-medium text-white rounded">
-                Cancel
-              </button>
-              {/* <img 
-                src={`${pdfURL}${pdfImagePath}`}
-              /> */}
-            </div>
-          ) : (
-            <>
-              <div className='text-2xl lg:text-3xl'>
-                <MdOutlineRemoveRedEye />
-              </div>
-              <p className="">Live preview</p>
 
-            </>
-          )
-        }
-      </div>
+      {
+        pdfFilePath ? (
+          <PdfContainer imageSrc={`${pdfURL}${pdfImagePath}`} imageLink={`${pdfURL}${pdfFilePath}`} />
+        ) : (
+          <div className="bg-slate-100 container relative w-48 h-44 md:w-72 md:h-80 lg:w-full lg:h-full 2xl:h-[45rem] min-[1700px]:h-[55rem] border-slate-400 border-[1px] flex flex-col justify-center items-center gap-0 overflow-hidden">
+            <div className='text-2xl lg:text-3xl'>
+              <MdOutlineRemoveRedEye />
+            </div>
+            <p className="">Live preview</p>
+          </div>
+        )
+      }
       <form className="w-full" onSubmit={handleMinting}>
-        <div className="mb-3 flex flex-col justify-start items-start ">
+        <div className="mb-3 flex flex-col justify-start items-start mt-5 xl:mt-0">
           <label className="text-gray-700 text-md mb-2 lg:mb-3 font-medium lg:leading-3" htmlFor="name">
             Name
           </label>

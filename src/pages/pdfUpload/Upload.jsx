@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
-import Loader from "../components/Loader";
+import Loader from "../../components/Loader";
 import { FaCheck } from "react-icons/fa";
 
 const apiUrl = 'http://localhost:3000/api/upload';

@@ -1,10 +1,12 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
+import Loader from "../components/Loader";
+import { FaCheck } from "react-icons/fa";
 
 const apiUrl = 'http://localhost:3000/api/upload';
 const chunkSize = 10 * 1024; 
 
-const Upload = ({ setPdfFile, pdfFile, setUploaded, uploaded }) => {
+const Upload = ({ setPdfFile, pdfFile, setUploaded, uploaded, name, setPdfFilePath }) => {
     const [chunkIndex, setChunkIndex] = useState(null);
     const [baseName, setBaseName] = useState('');
 
@@ -60,9 +62,12 @@ const Upload = ({ setPdfFile, pdfFile, setUploaded, uploaded }) => {
                 });
                 const chunkNum = chunkIndex + 1;
                 const lastChunk = (chunkNum === totalChunks);
-                console.log(response)
+                // console.log(response)
                 if (lastChunk) {
+                    const filePath = response.data.file.replace(/^\.\//, '/');
+                    console.log(filePath);
                     console.log("Document Sent!");
+                    setPdfFilePath(filePath)
                     setUploaded(true);
                     setChunkIndex(null);
                 } else {
@@ -82,9 +87,23 @@ const Upload = ({ setPdfFile, pdfFile, setUploaded, uploaded }) => {
                 Contract document
             </label>
             <label className="w-full flex justify-center gap-1 items-center bg-white text-blue rounded shadow tracking-wide border border-blue cursor-pointer py-[7px]">
-                <span className="text-base leading-normal">Add document</span>
-                <span className="text-base leading-normal text-slate-500">(pdf)</span>
-                <input type="file" id="pdf" accept=".pdf" name="pdf" className="hidden" onChange={handlePDF} />
+                {
+                    uploaded === null ? (
+                        <>
+                            <span className="text-base leading-normal">Add document</span>
+                            <span className="text-base leading-normal text-slate-500">(pdf)</span>
+                            <input type="file" id="pdf" accept=".pdf" name="pdf" className="hidden" onChange={handlePDF} disabled={!name}/>
+                        </>
+                    ) : uploaded === false ? (
+                        <Loader />
+                    ) : uploaded === true && (
+                        <>
+                            <span className="text-base leading-normal">Uploaded document</span>
+                            <span className="text-base text-accent1 px-1"><FaCheck /></span>
+                        </>
+                    )
+
+                }
             </label>
         </div>
     );

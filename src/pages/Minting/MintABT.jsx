@@ -31,7 +31,7 @@ const MintABT = ({ client, setOpenMint, pdfFile, setPdfFile }) => {
             "metadata": {
                 "name": abtName,
                 "description": description, 
-                "external_url": "http://localhost:5173/", 
+                "externalURL": "http://localhost:5173/", 
                 "image": "https://cdn.osxdaily.com/wp-content/uploads/2016/09/search-preview-mac-pdf-1.jpg", 
                 document
             }
@@ -90,27 +90,6 @@ const MintABT = ({ client, setOpenMint, pdfFile, setPdfFile }) => {
             onChange={(e) => setName(e.target.value)}
           />
         </div>
-        {/* <div className="mb-3 flex flex-col justify-start items-start ">
-          <label className="text-gray-700 text-md mb-2 font-medium" htmlFor="symbol">
-            Symbol
-          </label>
-          <input
-            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-            id="Symbol"
-            name="symbol"
-            type="text"
-          />
-        </div> */}
-        {/* <div className="mb-3 flex flex-col justify-start items-start ">
-          <label className="text-gray-700 text-md mb-2 font-medium" htmlFor="pdf">
-            Contract document
-          </label>
-          <label className="w-full flex justify-center gap-1 items-center bg-white text-blue rounded shadow tracking-wide border border-blue cursor-pointer py-[7px]">
-            <span className="text-base leading-normal">Add document</span>
-            <span className="text-base leading-normal text-slate-500">(pdf)</span>
-            <input type='file' id="pdf" accept=".pdf" name="pdf" className="hidden" onChange={handlePDF}/>
-          </label>
-        </div> */}
         <Upload pdfFile={pdfFile} setPdfFile={setPdfFile} setUploaded={setUploadedPDF} uploaded={uploadedPDF} name={name} setPdfFilePath={setPdfFilePath} setPdfImagePath={setPdfImagePath} />
         <div className="mb-3 flex flex-col justify-start items-start ">
           <label className="text-gray-700 text-md mb-2 font-medium" htmlFor="description">

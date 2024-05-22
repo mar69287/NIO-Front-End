@@ -12,6 +12,8 @@ const MintABT = ({ client, setOpenMint, pdfFile, setPdfFile }) => {
     const [description, setDescription] = useState('');
     const [uploadedPDF, setUploadedPDF] = useState(null);
     const [pdfFilePath, setPdfFilePath] = useState('');
+    const [pdfImagePath, setPdfImagePath] = useState('');
+
     const navigate = useNavigate();
 
     const handleMinting = async (e) => {
@@ -68,6 +70,9 @@ const MintABT = ({ client, setOpenMint, pdfFile, setPdfFile }) => {
               <button className="p-2 w-32 grid place-content-center bg-accent3 font-medium text-white rounded">
                 Cancel
               </button>
+              {/* <img 
+                src={`${pdfURL}${pdfImagePath}`}
+              /> */}
             </div>
           ) : (
             <>
@@ -115,7 +120,7 @@ const MintABT = ({ client, setOpenMint, pdfFile, setPdfFile }) => {
             <input type='file' id="pdf" accept=".pdf" name="pdf" className="hidden" onChange={handlePDF}/>
           </label>
         </div> */}
-        <Upload pdfFile={pdfFile} setPdfFile={setPdfFile} setUploaded={setUploadedPDF} uploaded={uploadedPDF} name={name} setPdfFilePath={setPdfFilePath} />
+        <Upload pdfFile={pdfFile} setPdfFile={setPdfFile} setUploaded={setUploadedPDF} uploaded={uploadedPDF} name={name} setPdfFilePath={setPdfFilePath} setPdfImagePath={setPdfImagePath} />
         <div className="mb-3 flex flex-col justify-start items-start ">
           <label className="text-gray-700 text-md mb-2 font-medium" htmlFor="description">
             Description

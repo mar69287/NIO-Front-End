@@ -6,7 +6,7 @@ import { FaCheck } from "react-icons/fa";
 const apiUrl = 'http://localhost:3000/api/upload';
 const chunkSize = 10 * 1024; 
 
-const Upload = ({ setPdfFile, pdfFile, setUploaded, uploaded, name, setPdfFilePath, setPdfImagePath }) => {
+const Upload = ({ label, setPdfFile, pdfFile, setUploaded, uploaded, name, setPdfFilePath, setPdfImagePath }) => {
     const [chunkIndex, setChunkIndex] = useState(null);
     const [baseName, setBaseName] = useState('');
 
@@ -62,7 +62,6 @@ const Upload = ({ setPdfFile, pdfFile, setUploaded, uploaded, name, setPdfFilePa
                 });
                 const chunkNum = chunkIndex + 1;
                 const lastChunk = (chunkNum === totalChunks);
-                console.log(response)
                 if (lastChunk) {
                     const filePath = response.data.file.replace(/^\.\//, '/');
                     const imagePath = response.data.image.replace(/^\.\//, '/')
@@ -87,7 +86,7 @@ const Upload = ({ setPdfFile, pdfFile, setUploaded, uploaded, name, setPdfFilePa
     return (
         <div className="mb-3 flex flex-col justify-start items-start">
             <label className="text-gray-700 text-md mb-2 font-medium" htmlFor="pdf">
-                Contract document
+                {label}
             </label>
             <label className="w-full flex justify-center gap-1 items-center bg-white text-blue rounded shadow tracking-wide border border-blue cursor-pointer py-[7px]">
                 {

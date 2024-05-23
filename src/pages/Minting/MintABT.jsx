@@ -1,29 +1,44 @@
 import { useState } from "react";
 import PageHeader from "../../components/PageHeader"
-import Upload from "../pdfUpload/Upload"
+import PdfUpload from "../Uploads/PdfUpload"
 import { MdOutlineRemoveRedEye, MdArrowBackIos } from "react-icons/md";
 import { createABT } from "../../utilities/Contract";
 import { useNavigate } from "react-router-dom";
 import PdfContainer from "../../components/PdfContainer";
+import ImageUpload from "../Uploads/ImageUpload";
 
-const pdfURL = 'http://localhost:3000'
+const dataURL = 'http://localhost:3000'
 
-const MintABT = ({ client, setOpenMint, pdfFile, setPdfFile }) => {
+const MintABT = ({ client, setOpenMint }) => {
     const [name, setName] = useState('');
     const [description, setDescription] = useState('');
-    const [uploadedPDF, setUploadedPDF] = useState(null);
-    const [pdfFilePath, setPdfFilePath] = useState('');
-    const [pdfImagePath, setPdfImagePath] = useState('');
+    //these states are for ....
+    const [document1Uploaded, setDocument1Uploaded] = useState(null);
+    const [document1FilePath, setDocument1FilePath] = useState('');
+    const [document1ImagePath, setDocument1ImagePath] = useState('');
+    //these states are for .... other document
+    const [document2Uploaded, setDocument2Uploaded] = useState(null);
+    const [document2FilePath, setDocument2FilePath] = useState('');
+    const [document2ImagePath, setDocument2ImagePath] = useState('');
+    //these states are for the images 
+    const [imageViewPaths, setImageViewPaths] = useState([]);
+
     const navigate = useNavigate();
 
     const handleMinting = async (e) => {
         e.preventDefault();
 
-        if (!name  || !uploadedPDF) return;
+        if (!name  || !document1Uploaded) return;
         const formData = new FormData(event.target);
         const abtName = formData.get("name");
         const description = formData.get("description");
-        const document = `${pdfURL}${pdfFilePath}`
+        const document1 = `${dataURL}${document1FilePath}`
+        const document2 = `${dataURL}${document2FilePath}`
+        let prefixedImageViewPaths =[]
+        if (imageViewPaths) {
+           prefixedImageViewPaths = imageViewPaths.map(path => `${dataURL}${path}`)
+        }
+        
     
         const data = {
             "user_address": client.account,
@@ -32,16 +47,16 @@ const MintABT = ({ client, setOpenMint, pdfFile, setPdfFile }) => {
                 "name": abtName,
                 "description": description, 
                 "externalURL": "http://localhost:5173/", 
-                "image": "https://cdn.osxdaily.com/wp-content/uploads/2016/09/search-preview-mac-pdf-1.jpg", 
-                document
+                "images": prefixedImageViewPaths, 
+                document1,
+                document2,
             }
         }  
-    
+        console.log(data)
         try {
             const response = await createABT(data);
-            console.log(response)
+            // console.log(response)
             // const tokenId = response.tokenId
-            // console.log(typeof tokenId)
             // console.log(tokenId)
             // navigate(`/abt/${tokenId}`);
           } catch (error) {
@@ -65,8 +80,8 @@ const MintABT = ({ client, setOpenMint, pdfFile, setPdfFile }) => {
       </div>
 
       {
-        pdfFilePath ? (
-          <PdfContainer imageSrc={`${pdfURL}${pdfImagePath}`} imageLink={`${pdfURL}${pdfFilePath}`} />
+        document1FilePath && document1Uploaded ? (
+          <PdfContainer imageSrc={`${dataURL}${document1ImagePath}`} imageLink={`${dataURL}${document1ImagePath}`} />
         ) : (
           <div className="bg-slate-100 container relative w-48 h-44 md:w-72 md:h-80 lg:w-full lg:h-full 2xl:h-[45rem] min-[1700px]:h-[55rem] border-slate-400 border-[1px] flex flex-col justify-center items-center gap-0 overflow-hidden">
             <div className='text-2xl lg:text-3xl'>
@@ -90,7 +105,9 @@ const MintABT = ({ client, setOpenMint, pdfFile, setPdfFile }) => {
             onChange={(e) => setName(e.target.value)}
           />
         </div>
-        <Upload pdfFile={pdfFile} setPdfFile={setPdfFile} setUploaded={setUploadedPDF} uploaded={uploadedPDF} name={name} setPdfFilePath={setPdfFilePath} setPdfImagePath={setPdfImagePath} />
+        <PdfUpload label={'Title/Deed'} pdfFile={document1FilePath} setPdfFile={setDocument1FilePath} setUploaded={setDocument1Uploaded} uploaded={document1Uploaded} name={name} setPdfFilePath={setDocument1FilePath} setPdfImagePath={setDocument1ImagePath} />
+        <PdfUpload label={'NIOV Legal Agreement'} pdfFile={document2FilePath} setPdfFile={setDocument2FilePath} setUploaded={setDocument2Uploaded} uploaded={document2Uploaded} name={name} setPdfFilePath={setDocument2FilePath} setPdfImagePath={setDocument2ImagePath} />
+        <ImageUpload label={'Images'} setImageViewPaths={setImageViewPaths} imageViewPaths={imageViewPaths} name={name} />
         <div className="mb-3 flex flex-col justify-start items-start ">
           <label className="text-gray-700 text-md mb-2 font-medium" htmlFor="description">
             Description

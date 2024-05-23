@@ -42,7 +42,8 @@ const MintABT = ({ client, setOpenMint }) => {
     
         const data = {
             "user_address": client.account,
-            "network": client.chainId,
+            // "network": client.chainId,
+            "network": 31337,
             "metadata": {
                 "name": abtName,
                 "description": description, 
@@ -52,13 +53,11 @@ const MintABT = ({ client, setOpenMint }) => {
                 document2,
             }
         }  
-        console.log(data)
+        // console.log(data)
         try {
             const response = await createABT(data);
-            // console.log(response)
-            // const tokenId = response.tokenId
-            // console.log(tokenId)
-            // navigate(`/abt/${tokenId}`);
+            const tokenId = response.tokenId
+            navigate(`/abt/${tokenId}`);
           } catch (error) {
             console.error('Error:', error);
         }
@@ -81,7 +80,7 @@ const MintABT = ({ client, setOpenMint }) => {
 
       {
         document1FilePath && document1Uploaded ? (
-          <PdfContainer imageSrc={`${dataURL}${document1ImagePath}`} imageLink={`${dataURL}${document1ImagePath}`} />
+          <PdfContainer imageSrc={`${dataURL}${document1ImagePath}`} imageLink={`${dataURL}${document1FilePath}`} />
         ) : (
           <div className="bg-slate-100 container relative w-48 h-44 md:w-72 md:h-80 lg:w-full lg:h-full 2xl:h-[45rem] min-[1700px]:h-[55rem] border-slate-400 border-[1px] flex flex-col justify-center items-center gap-0 overflow-hidden">
             <div className='text-2xl lg:text-3xl'>

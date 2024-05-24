@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { MdOutlineRemoveRedEye } from 'react-icons/md';
 
-const PdfContainer = ({ imageSrc, imageLink }) => {
+const PdfContainer = ({ imageSrc, pdfLink }) => {
   const [isHovered, setIsHovered] = useState(false);
 
   return (
@@ -23,7 +23,7 @@ const PdfContainer = ({ imageSrc, imageLink }) => {
       />
 
       {isHovered && (
-        <a href={imageLink} target="_blank" rel="noopener noreferrer">
+        <a href={pdfLink} target="_blank" rel="noopener noreferrer">
             <div className="absolute inset-0 flex flex-col justify-center items-center bg-black bg-opacity-50 text-white">
               <div className='text-2xl lg:text-3xl'>
                 <MdOutlineRemoveRedEye />

@@ -4,6 +4,7 @@ import Loader from "../../components/Loader";
 import { FaCheck } from "react-icons/fa";
 
 const apiUrl = 'http://localhost:3000/api/upload';
+const dataURL = 'http://localhost:3000';
 const chunkSize = 10 * 1024;
 
 const ImageUpload = ({ label, setImageViewPaths, imageViewPaths, name }) => {
@@ -63,7 +64,8 @@ const ImageUpload = ({ label, setImageViewPaths, imageViewPaths, name }) => {
                 const chunkNum = chunkIndex + 1;
                 const lastChunk = (chunkNum === totalChunks);
                 if (lastChunk) {
-                    const imagePath = response.data.file.replace(/^\.\//, '/');
+                    let imagePath = response.data.file.replace(/^\.\//, '/');
+                    imagePath =   `${dataURL}${imagePath}`
                     console.log(imagePath)
                     setImageViewPaths((prev) => [...prev, imagePath]);
                     setUploaded(true);

@@ -2,13 +2,16 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import Loader from "../../components/Loader";
 import { FaCheck } from "react-icons/fa";
+import { MdDeleteOutline } from "react-icons/md";
 
 const apiUrl = 'http://localhost:3000/api/upload';
+const dataURL = 'http://localhost:3000';
 const chunkSize = 10 * 1024; 
 
-const Upload = ({ label, setPdfFile, pdfFile, setUploaded, uploaded, name, setPdfFilePath, setPdfImagePath }) => {
+const Upload = ({ label, setPdfFile, pdfFile, setUploaded, uploaded, name, setPdfFilePath, setPdfImagePath, setDocuments }) => {
     const [chunkIndex, setChunkIndex] = useState(null);
     const [baseName, setBaseName] = useState('');
+    const [isHovering, setIsHovering] = useState(false);
 
     useEffect(() => {
         if (pdfFile !== null && chunkIndex === null && uploaded === false) {
@@ -63,11 +66,19 @@ const Upload = ({ label, setPdfFile, pdfFile, setUploaded, uploaded, name, setPd
                 const chunkNum = chunkIndex + 1;
                 const lastChunk = (chunkNum === totalChunks);
                 if (lastChunk) {
-                    const filePath = response.data.file.replace(/^\.\//, '/');
-                    const imagePath = response.data.image.replace(/^\.\//, '/')
-                    // console.log(filePath);
+                    let filePath = response.data.file.replace(/^\.\//, '/');
+                    let imagePath = response.data.image.replace(/^\.\//, '/')
+                    filePath = `${dataURL}${filePath}`
+                    imagePath = `${dataURL}${imagePath}`
                     console.log("Document Sent!");
-                    console.log('image path:', imagePath)
+                    // console.log('image path:', imagePath)
+                    // console.log('file path:', filePath)
+                    const document = {
+                        'name': label,
+                        'image': imagePath,
+                        'file': filePath,
+                    }
+                    setDocuments((prevDocuments) => [...prevDocuments, document]);
                     setPdfImagePath(imagePath)
                     setPdfFilePath(filePath)
                     setUploaded(true);
@@ -83,12 +94,26 @@ const Upload = ({ label, setPdfFile, pdfFile, setUploaded, uploaded, name, setPd
         reader.readAsDataURL(blob);
     }
 
+    const handleDelete = () => {
+        setDocuments((prevDocuments) => prevDocuments.filter((document) => document.name !== label));
+        setPdfImagePath('');
+        setPdfFilePath('');
+        setBaseName('');
+        setPdfFile(null);
+    }
+
     return (
         <div className="mb-3 flex flex-col justify-start items-start">
             <label className="text-gray-700 text-md mb-2 font-medium" htmlFor="pdf">
                 {label}
             </label>
-            <label className="w-full flex justify-center gap-1 items-center bg-white text-blue rounded shadow tracking-wide border border-blue cursor-pointer py-[7px]">
+            <label 
+                className={`w-full flex justify-center gap-1 items-center bg-white text-blue rounded shadow tracking-wide border border-blue cursor-pointer py-[7px]
+                 `}
+                onClick={uploaded === true ? handleDelete : null}
+                onMouseEnter={() => setIsHovering(true)}
+                onMouseLeave={() => setIsHovering(false)}
+            >
                 {
                     uploaded === null ? (
                         <>
@@ -100,8 +125,8 @@ const Upload = ({ label, setPdfFile, pdfFile, setUploaded, uploaded, name, setPd
                         <Loader />
                     ) : uploaded === true && (
                         <>
-                            <span className="text-base leading-normal">Uploaded document</span>
-                            <span className="text-base text-accent1 px-1"><FaCheck /></span>
+                            <span className="text-base leading-normal"> {isHovering ? 'Delete Document' : 'Uploaded document'}</span>
+                            <span className={`text-base ${isHovering ? 'text-accent3' : 'text-accent1'}  px-1`}>{isHovering ? <MdDeleteOutline /> : <FaCheck />}</span>
                         </>
                     )
 

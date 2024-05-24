@@ -5,9 +5,10 @@ import { FaCheck } from "react-icons/fa";
 import { MdDeleteOutline } from "react-icons/md";
 
 const apiUrl = 'http://localhost:3000/api/upload';
+const dataURL = 'http://localhost:3000';
 const chunkSize = 10 * 1024; 
 
-const Upload = ({ label, setPdfFile, pdfFile, setUploaded, uploaded, name, setPdfFilePath, setPdfImagePath }) => {
+const Upload = ({ label, setPdfFile, pdfFile, setUploaded, uploaded, name, setPdfFilePath, setPdfImagePath, setDocuments }) => {
     const [chunkIndex, setChunkIndex] = useState(null);
     const [baseName, setBaseName] = useState('');
     const [isHovering, setIsHovering] = useState(false);
@@ -65,11 +66,19 @@ const Upload = ({ label, setPdfFile, pdfFile, setUploaded, uploaded, name, setPd
                 const chunkNum = chunkIndex + 1;
                 const lastChunk = (chunkNum === totalChunks);
                 if (lastChunk) {
-                    const filePath = response.data.file.replace(/^\.\//, '/');
-                    const imagePath = response.data.image.replace(/^\.\//, '/')
-                    // console.log(filePath);
+                    let filePath = response.data.file.replace(/^\.\//, '/');
+                    let imagePath = response.data.image.replace(/^\.\//, '/')
+                    filePath = `${dataURL}${filePath}`
+                    imagePath = `${dataURL}${imagePath}`
                     console.log("Document Sent!");
-                    console.log('image path:', imagePath)
+                    // console.log('image path:', imagePath)
+                    // console.log('file path:', filePath)
+                    const document = {
+                        'name': label,
+                        'image': imagePath,
+                        'file': filePath,
+                    }
+                    setDocuments((prevDocuments) => [...prevDocuments, document]);
                     setPdfImagePath(imagePath)
                     setPdfFilePath(filePath)
                     setUploaded(true);
@@ -86,10 +95,11 @@ const Upload = ({ label, setPdfFile, pdfFile, setUploaded, uploaded, name, setPd
     }
 
     const handleDelete = () => {
-        setPdfImagePath('')
-        setPdfFilePath('')
-        setBaseName('')
-        setPdfFile(null)
+        setDocuments((prevDocuments) => prevDocuments.filter((document) => document.name !== label));
+        setPdfImagePath('');
+        setPdfFilePath('');
+        setBaseName('');
+        setPdfFile(null);
     }
 
     return (

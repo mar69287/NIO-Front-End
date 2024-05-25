@@ -8,6 +8,7 @@ import ImageUpload from "../Uploads/ImageUpload";
 import Loader from "../../components/Loader";
 import ActiveSection from "../../components/ActiveSection";
 import PdfCarousel from "../../components/PdfCarousel";
+import ImageCarousel from "../../components/ImageCarousel";
 
 const MintABT = ({ client, setOpenMint }) => {
     const [name, setName] = useState('');
@@ -76,18 +77,11 @@ const MintABT = ({ client, setOpenMint }) => {
         <p className="leading-5">Once your item has been minted, you will not be able to change any of its information</p>
         <ActiveSection headers={['Documents', 'Images']} active={activeSection} setActive={setActiveSection} />
       </div>
-
       {
-        document1Uploaded || document2Uploaded ? (
-          // <PdfContainer imageSrc={document1ImagePath} imageLink={`${dataURL}${document1FilePath}`} />
+        activeSection === 0 ? (
           <PdfCarousel documents={documents} />
         ) : (
-          <div className="bg-slate-100 container relative w-48 h-44 md:w-72 md:h-80 lg:w-full lg:h-full 2xl:h-[45rem] min-[1700px]:h-[55rem] border-slate-400 border-[1px] flex flex-col justify-center items-center gap-0 overflow-hidden">
-            <div className='text-2xl lg:text-3xl'>
-              <MdOutlineRemoveRedEye />
-            </div>
-            <p className="">Live preview</p>
-          </div>
+          <ImageCarousel imgs={imageViewPaths} />
         )
       }
       <form className="w-full" onSubmit={handleMinting}>

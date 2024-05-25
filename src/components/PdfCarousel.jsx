@@ -17,7 +17,7 @@ const PdfCarousel = ({ documents }) => {
  }, [documents]);
 
   return (
-    <div className="bg-slate-100 container relative w-48 h-44 md:w-72 md:h-80 lg:w-full lg:h-full 2xl:h-[45rem] min-[1700px]:h-[55rem] border-slate-400 border-[1px] flex flex-col justify-center items-center gap-0 overflow-hidden"
+    <div className="relative w-full h-80 md:h-[30rem] lg:h-[32rem] 2xl:h-[35rem] min-[1700px]:h-[38rem] flex flex-col justify-center items-center gap-0 overflow-hidden"
     >
       {
         documents.length === 0 ? (
@@ -41,7 +41,7 @@ const Images = ({ documents, imgIndex}) => {
         <>
             {documents.map((document, idx) => {
                 return (
-                    <a key={idx} href={document.file} target="_blank" rel="noopener noreferrer" className={`${imgIndex !== idx && 'hidden'}`}
+                    <a key={idx} href={document.file} target="_blank" rel="noopener noreferrer" className={`${imgIndex !== idx && 'hidden'} w-80 md:w-[30rem] h-full grid place-content-center relative border-slate-400 border-[1px] overflow-hidden`}
                         onMouseEnter={() => setIsHovered(true)}
                         onMouseLeave={() => setIsHovered(false)}
                     >
@@ -51,8 +51,8 @@ const Images = ({ documents, imgIndex}) => {
                             whileHover={{
                                 filter: 'blur(2px) brightness(0.8)',
                             }}
-                            className='object-center border-slate-400 border-[1px]'
-                            style={{ maxWidth: '100%', maxHeight: '100%' }}
+                            className='object-scale-down'
+                            // style={{ maxWidth: '100%', maxHeight: '100%' }}
                         />
                         {isHovered && (
 
@@ -82,7 +82,7 @@ const Dots = ({ documents, imgIndex, setImgIndex }) => {
             <button
               key={idx}
               onClick={() => setImgIndex(idx)}
-              className={`h-3 w-3 rounded-full transition-colors ${
+              className={`h-2.5 w-2.5 xl:h-3 xl:w-3 rounded-full transition-colors ${
                 idx === imgIndex ? "bg-neutral-500" : "bg-slate-400"
               }`}
             />

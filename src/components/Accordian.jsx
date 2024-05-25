@@ -6,7 +6,7 @@ const Accordian = ({ owner, description, details}) => {
   const [openDetails, setOpenDetails] = useState(false);
 
   return (
-    <div className="w-full h-max border-slate-400 border-[1px] mb-5 rounded">
+    <div className="w-full h-max border-slate-400 border-[1px] mb-5 rounded mt-5 xl:mt-0">
         <div className="w-full p-3 lg:p-4 flex justify-between items-center border-slate-400 border-b-[1px]">
             <h1 className="text-sm xl:text-base">Current Owner</h1>
             <p className="text-sm xl:text-base">{owner}</p>

@@ -1,21 +1,34 @@
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { MdOutlineRemoveRedEye } from 'react-icons/md';
+import EmptyContainer from "./EmptyContainer";
 
 const PdfCarousel = ({ documents }) => {
  const [imgIndex, setImgIndex] = useState(0);
+ console.log('img', imgIndex)
+ console.log('length', documents.length)
 
  useEffect(() => {
-    if (imgIndex >= documents.length) {
+    if (documents.length === 0) {
+      setImgIndex(0);
+    } else if (imgIndex >= documents.length) {
       setImgIndex(documents.length - 1);
     }
- }, [documents, imgIndex]);
+ }, [documents]);
 
   return (
     <div className="bg-slate-100 container relative w-48 h-44 md:w-72 md:h-80 lg:w-full lg:h-full 2xl:h-[45rem] min-[1700px]:h-[55rem] border-slate-400 border-[1px] flex flex-col justify-center items-center gap-0 overflow-hidden"
     >
-        <Images documents={documents} imgIndex={imgIndex} />
-        <Dots documents={documents} imgIndex={imgIndex} setImgIndex={setImgIndex} />
+      {
+        documents.length === 0 ? (
+          <EmptyContainer />
+        ) : (
+          <>
+            <Images documents={documents} imgIndex={imgIndex} />
+            <Dots documents={documents} imgIndex={imgIndex} setImgIndex={setImgIndex} />
+          </>
+        )
+      }
     </div>
   )
 }

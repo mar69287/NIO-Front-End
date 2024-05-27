@@ -55,11 +55,11 @@ const ABTsProject = ({client}) => {
                 image placeholder
               </div>
               <div className="flex flex-col justify-center items-center">
-                <h1 className="text-md font-medium pb-1">Get started with ABTs</h1>
+                <h1 className="text-lg font-medium pb-[1px]">Get started with ABTs</h1>
                 <p className="text-center text-base">Create a dynamic token in NIOVLABS</p>
                 <p className="text-center text-base leading-5">Create a new ABT with multiple interchangeable layers</p>
               </div>
-              <button onClick={() => setOpenMint(true)} className="w-full sm:w-max sm:px-5 py-2 gap-3 rounded=sm flex justify-center items-center bg-primary1 text-white">
+              <button onClick={() => setOpenMint(true)} className="w-full sm:w-max sm:px-5 py-2 gap-3 rounded-sm flex justify-center items-center bg-primary1 text-white">
                 <div className='text-md lg:text-sm'>
                     <FaPen />
                 </div>
